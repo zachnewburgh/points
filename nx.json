@@ -13,6 +13,9 @@
     },
     "points-e2e": {
       "tags": []
+    },
+    "firebase": {
+      "tags": []
     }
   }
 }
