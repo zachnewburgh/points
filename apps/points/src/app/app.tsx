@@ -1,146 +1,66 @@
-import React from 'react';
-
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
+import { firebaseConfig } from '@points/firebase';
+import React, { useState } from 'react';
 import './app.scss';
 
-import { Route, Link } from 'react-router-dom';
+firebase.initializeApp(firebaseConfig);
 
-export const App = () => {
-  /*
-   * Replace the elements below with your own.
-   *
-   * Note: The corresponding styles are in the ./${fileName}.${style} file.
-   */
+interface User {
+  displayName: string;
+  email: string;
+  photoURL: string;
+}
+
+export const App = () => { 
+  
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState(null);
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      setCurrentUser(user)
+    }
+    setIsLoading(false);
+  });
+
+  const login = async () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    try {
+      await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+      const result = await firebase.auth().signInWithPopup(provider);
+      const { displayName, email, photoURL } = result.user;
+      const user = { displayName, email, photoURL };
+      setCurrentUser(user);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const logout = async () => {
+    try {
+      await firebase.auth().signOut();
+      setCurrentUser(null);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleLogin = () => {
+    currentUser ? logout() : login();
+  }
+
   return (
-    <div className="app">
-      <header className="flex">
-        <img
-          alt=""
-          width="75"
-          src="https://nx.dev/assets/images/nx-logo-white.svg"
-        />
-        <h1>Welcome to points!</h1>
-      </header>
-      <main>
-        <h2>Resources &amp; Tools</h2>
-        <p>Thank you for using and showing some ♥ for Nx.</p>
-        <div className="flex github-star-container">
-          <a
-            href="https://github.com/nrwl/nx"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {' '}
-            If you like Nx, please give it a star:
-            <div className="github-star-badge">
-              <svg
-                className="material-icons"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path d="M0 0h24v24H0z" fill="none" />
-                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-              </svg>
-              Star
-            </div>
-          </a>
-        </div>
-        <p>Here are some links to help you get started.</p>
-        <ul className="resources">
-          <li className="col-span-2">
-            <a
-              className="resource flex"
-              href="https://nx.dev/react/getting-started/what-is-nx"
-            >
-              Nx video tutorial
-            </a>
-          </li>
-          <li className="col-span-2">
-            <a
-              className="resource flex"
-              href="https://nx.dev/react/tutorial/01-create-application"
-            >
-              Interactive tutorial
-            </a>
-          </li>
-          <li className="col-span-2">
-            <a className="resource flex" href="https://connect.nrwl.io/">
-              <img
-                height="36"
-                alt="Nrwl Connect"
-                src="https://connect.nrwl.io/assets/img/CONNECT_ColorIcon.png"
-              />
-              <span className="gutter-left">Nrwl Connect</span>
-            </a>
-          </li>
-        </ul>
-        <h2>Next Steps</h2>
-        <p>Here are some things you can do with Nx.</p>
-        <details open>
-          <summary>Add UI library</summary>
-          <pre>{`# Generate UI lib
-nx g @nrwl/react:lib ui
-
-# Add a component
-nx g @nrwl/react:component xyz --project ui`}</pre>
-        </details>
-        <details>
-          <summary>View dependency graph</summary>
-          <pre>{`nx dep-graph`}</pre>
-        </details>
-        <details>
-          <summary>Run affected commands</summary>
-          <pre>{`# see what's been affected by changes
-nx affected:dep-graph
-
-# run tests for current changes
-nx affected:test
-
-# run e2e tests for current changes
-nx affected:e2e
-`}</pre>
-        </details>
-      </main>
-
-      {/* START: routes */}
-      {/* These routes and navigation have been generated for you */}
-      {/* Feel free to move and update them to fit your needs */}
-      <br />
-      <hr />
-      <br />
-      <div role="navigation">
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/page-2">Page 2</Link>
-          </li>
-        </ul>
-      </div>
-      <Route
-        path="/"
-        exact
-        render={() => (
-          <div>
-            This is the generated root route.{' '}
-            <Link to="/page-2">Click here for page 2.</Link>
-          </div>
-        )}
-      />
-      <Route
-        path="/page-2"
-        exact
-        render={() => (
-          <div>
-            <Link to="/">Click here to go back to root page.</Link>
-          </div>
-        )}
-      />
-      {/* END: routes */}
-    </div>
+    !isLoading && <>
+      <button onClick={handleLogin}>
+        {currentUser ? 'Logout' : 'Login'}
+      </button>
+      <h1>{currentUser ? `Welcome, ${currentUser.displayName}!` : 'Not logged in.'}</h1>
+      {currentUser && <img src={currentUser.photoURL} />}
+    </>
   );
 };
 
 export default App;
+
+
