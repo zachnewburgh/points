@@ -39,4 +39,4 @@ testem.log
 Thumbs.db
 
 # Firebase
-libs/firebase/src/lib/firebase.ts
+libs/firebase/src/lib/secrets.ts
