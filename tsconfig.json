@@ -16,7 +16,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@points/firebase": ["libs/firebase/src/index.ts"]
+      "@points/firebase": ["libs/firebase/src/index.ts"],
+      "@points/points": ["libs/points/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

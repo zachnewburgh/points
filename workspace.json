@@ -1,7 +1,7 @@
 {
   "version": 1,
   "projects": {
-    "points": {
+    "app": {
       "root": "apps/points",
       "sourceRoot": "apps/points/src",
       "projectType": "application",
@@ -73,6 +73,33 @@
           "options": {
             "jestConfig": "apps/points/jest.config.js",
             "tsConfig": "apps/points/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "points": {
+      "root": "libs/points",
+      "sourceRoot": "libs/points/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "config": "libs/points/.eslintrc",
+            "tsConfig": [
+              "libs/points/tsconfig.lib.json",
+              "libs/points/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/points/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/points/jest.config.js",
+            "tsConfig": "libs/points/tsconfig.spec.json"
           }
         }
       }
@@ -183,5 +210,5 @@
       }
     }
   },
-  "defaultProject": "points"
+  "defaultProject": "app"
 }
