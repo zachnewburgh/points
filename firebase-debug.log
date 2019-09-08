@@ -1,0 +1,25 @@
+[debug] [2019-09-08T18:39:40.514Z] ----------------------------------------------------------------------
+[debug] [2019-09-08T18:39:40.515Z] Command:       /Users/zachnewburgh/.nvm/versions/node/v12.9.1/bin/node /Users/zachnewburgh/.nvm/versions/node/v12.9.1/bin/firebase serve
+[debug] [2019-09-08T18:39:40.516Z] CLI Version:   7.3.0
+[debug] [2019-09-08T18:39:40.516Z] Platform:      darwin
+[debug] [2019-09-08T18:39:40.516Z] Node Version:  v12.9.1
+[debug] [2019-09-08T18:39:40.517Z] Time:          Sun Sep 08 2019 14:39:40 GMT-0400 (Eastern Daylight Time)
+[debug] [2019-09-08T18:39:40.517Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-09-08T18:39:40.528Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-09-08T18:39:40.528Z] > authorizing via signed-in user
+[debug] [2019-09-08T18:39:40.528Z] [iam] checking project points-61aa2 for permissions ["firebase.projects.get"]
+[debug] [2019-09-08T18:39:40.531Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/points-61aa2:testIamPermissions  
+
+[debug] [2019-09-08T18:39:40.986Z] <<< HTTP RESPONSE 200
+[debug] [2019-09-08T18:39:40.988Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/points-61aa2  
+ 
+[debug] [2019-09-08T18:39:41.290Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/zachnewburgh/Projects/points'...
+[info] 
+[debug] [2019-09-08T18:39:41.292Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/points-61aa2/webApps/-/config  
+ 
+[debug] [2019-09-08T18:39:41.697Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: dist/apps/points
+[info] ✔  hosting: Local server: http://localhost:5000
