@@ -1,18 +1,15 @@
 import { auth, initializeApp } from 'firebase/app';
-import { firestore } from 'firebase'
+import { firestore } from 'firebase';
 import { config } from './secrets';
 
 export const init = () => initializeApp(config);
 export const initFirestore = () => firestore();
 
-export const authChanged = (setCurrentUser: (user: User) => void, setIsLoading: (isLoading: boolean) => void) => {
-  auth().onAuthStateChanged((user) => {
-    if (user) {
-      setCurrentUser(user);
-    }
-    setIsLoading(false);
+export const authChanged = (setCurrentUser: (user: User) => void) => {
+  auth().onAuthStateChanged(user => {
+    setCurrentUser(user);
   });
-}
+};
 
 interface User {
   displayName: string;
@@ -31,7 +28,7 @@ export const login = async (setCurrentUser: (user: User) => void) => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 export const logout = async (setCurrentUser: (user: User) => void) => {
   try {
