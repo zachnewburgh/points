@@ -11,7 +11,6 @@ import {
 firebaseUtils.init();
 
 export const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
   const [program, setProgram] = useState('');
   const [programs, setPrograms] = useState([]);
@@ -27,14 +26,19 @@ export const App = () => {
   const programsRef = db.collection('programs');
 
   const getPrograms = async () => {
-    const programs = await programsRef.orderBy('name').get();
-    setPrograms(programs.docs);
+    if (currentUser) {
+      const programs = await programsRef.orderBy('name').get();
+      setPrograms(programs.docs);
+    }
   };
 
   useEffect(() => {
-    firebaseUtils.authChanged(setCurrentUser, setIsLoading);
-    getPrograms();
+    firebaseUtils.authChanged(setCurrentUser);
   }, []);
+
+  useEffect(() => {
+    currentUser && getPrograms();
+  }, [currentUser]);
 
   const handleLogin = () => {
     currentUser
@@ -42,57 +46,58 @@ export const App = () => {
       : firebaseUtils.login(setCurrentUser);
   };
 
-  return (
-    !isLoading && (
-      <>
-        <button onClick={handleLogin}>
-          {currentUser ? 'Logout' : 'Login'}
-        </button>
-        <h1>
-          {currentUser
-            ? `Welcome, ${currentUser.displayName}!`
-            : 'Not logged in.'}
-        </h1>
-        {currentUser && <img src={currentUser.photoURL} />}
+  const loggedIn = currentUser && (
+    <>
+      <button onClick={handleLogin}>Log out</button>
+      <h1>Welcome, {currentUser.displayName}!</h1>
+      <img src={currentUser.photoURL} />
 
-        <ProgramCreate
-          programs={programs}
-          program={program}
-          programsRef={programsRef}
-          getPrograms={getPrograms}
-          setProgram={setProgram}
-        />
+      <ProgramCreate
+        programs={programs}
+        program={program}
+        programsRef={programsRef}
+        getPrograms={getPrograms}
+        setProgram={setProgram}
+      />
 
-        <ProgramUpdate
-          from={from}
-          programs={programs}
-          to={to}
-          fromRatio={fromRatio}
-          toRatio={toRatio}
-          programToEdit={programToEdit}
-          setFrom={setFrom}
-          setFromRatio={setFromRatio}
-          setTo={setTo}
-          setToRatio={setToRatio}
-          programsRef={programsRef}
-          getPrograms={getPrograms}
-          setNewName={setNewName}
-          newName={newName}
-          setProgramToEdit={setProgramToEdit}
-        />
+      <ProgramUpdate
+        from={from}
+        programs={programs}
+        to={to}
+        fromRatio={fromRatio}
+        toRatio={toRatio}
+        programToEdit={programToEdit}
+        setFrom={setFrom}
+        setFromRatio={setFromRatio}
+        setTo={setTo}
+        setToRatio={setToRatio}
+        programsRef={programsRef}
+        getPrograms={getPrograms}
+        setNewName={setNewName}
+        newName={newName}
+        setProgramToEdit={setProgramToEdit}
+      />
 
-        <ProgramDelete
-          setProgramToDelete={setProgramToDelete}
-          getPrograms={getPrograms}
-          programsRef={programsRef}
-          programs={programs}
-          programToDelete={programToDelete}
-        />
+      <ProgramDelete
+        setProgramToDelete={setProgramToDelete}
+        getPrograms={getPrograms}
+        programsRef={programsRef}
+        programs={programs}
+        programToDelete={programToDelete}
+      />
 
-        <ProgramRead programs={programs} />
-      </>
-    )
+      <ProgramRead programs={programs} />
+    </>
   );
+
+  const loggedOut = (
+    <>
+      <button onClick={handleLogin}>Log in</button>
+      <h1>Not logged in.</h1>
+    </>
+  );
+
+  return currentUser ? loggedIn : loggedOut;
 };
 
 export default App;
