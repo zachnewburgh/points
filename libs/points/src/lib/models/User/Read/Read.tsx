@@ -15,7 +15,7 @@ export default (props: Props) => {
 
   const balances = Object.keys(accounts).map((accountId: string) => {
     const account = programs.find(({ id }: Program) => id === accountId);
-    const accountName = account.data().name;
+    const accountName = account && account.data().name;
 
     return (
       <li key={accountId}>

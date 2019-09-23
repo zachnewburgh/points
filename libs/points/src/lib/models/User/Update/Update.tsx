@@ -1,16 +1,19 @@
 import React, { ChangeEvent, FormEvent } from 'react';
-import { CollectionReference } from 'firebase/firebase-firestore';
+import {
+  DocumentReference,
+  CollectionReference
+} from 'firebase/firebase-firestore';
 
 import './Update.scss';
 import { getAccounts } from '../User.utils';
 import { Program } from '../../Program';
-import { CurrentUser, UserBalances } from '../User.constants';
+import { UserBalances } from '../User.constants';
 
 interface Props {
   account: string;
   accountPoints: number;
   programs: Array<Program>;
-  currentUser: CurrentUser;
+  user: DocumentReference;
   usersRef: CollectionReference;
   setAccount: (id: string) => void;
   setAccountPoints: (points: number) => void;
@@ -22,19 +25,19 @@ export default (props: Props) => {
     programs,
     account,
     accountPoints,
-    currentUser,
+    user,
     usersRef,
     setAccount,
     setAccounts,
     setAccountPoints
   } = props;
 
-  const handleAccountUpdate = (event: FormEvent) => {
+  const handleAccountUpdate = async (event: FormEvent) => {
     event.preventDefault();
-    usersRef
-      .doc(currentUser.uid)
-      .set({ balances: { [account]: accountPoints } }, { merge: true });
-    getAccounts(currentUser, usersRef, setAccounts);
+    const userRef = usersRef.doc(user.id);
+    userRef.set({ balances: { [account]: accountPoints } }, { merge: true });
+    const updatedUser = await userRef.get();
+    getAccounts(updatedUser, setAccounts);
   };
 
   const handleAccountChange = (event: ChangeEvent<HTMLSelectElement>) => {
