@@ -46,10 +46,10 @@ export default (props: Props) => {
     }
   };
 
-  const programOptions = programs.map(({ id, data }: Program) => {
-    const { name } = data();
+  const programOptions = programs.map((program: Program) => {
+    const { name } = program.data();
     return (
-      <option value={id} key={id}>
+      <option value={program.id} key={program.id}>
         {name}
       </option>
     );
