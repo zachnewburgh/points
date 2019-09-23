@@ -15,7 +15,9 @@ import {
 firebaseUtils.init();
 
 export const App = () => {
+  const [isAdmin, setIsAdmin] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const [user, setUser] = useState(null);
   const [program, setProgram] = useState('');
   const [programs, setPrograms] = useState([]);
   const [from, setFrom] = useState('');
@@ -37,12 +39,28 @@ export const App = () => {
     firebaseUtils.authChanged(setCurrentUser);
   }, []);
 
+  const getUser = async () => {
+    const userToSet = await usersRef.doc(currentUser.uid).get();
+    setUser(userToSet);
+  };
+
   useEffect(() => {
     if (currentUser) {
-      getPrograms(programsRef, setPrograms);
-      getAccounts(currentUser, usersRef, setAccounts);
+      getUser();
     }
   }, [currentUser]);
+
+  const getAdmin = async () => {
+    setIsAdmin(!!user && user.data().role === 'admin');
+  };
+
+  useEffect(() => {
+    if (user) {
+      getAdmin();
+      getPrograms(programsRef, setPrograms);
+      getAccounts(user, setAccounts);
+    }
+  }, [user]);
 
   const handleLogin = () => {
     currentUser
@@ -63,49 +81,53 @@ export const App = () => {
         account={account}
         accountPoints={accountPoints}
         programs={programs}
-        currentUser={currentUser}
         usersRef={usersRef}
+        user={user}
         setAccount={setAccount}
         setAccounts={setAccounts}
         setAccountPoints={setAccountPoints}
       />
 
-      <ProgramCreate
-        programs={programs}
-        program={program}
-        programsRef={programsRef}
-        getPrograms={getPrograms}
-        setProgram={setProgram}
-        setPrograms={setPrograms}
-      />
+      {isAdmin && (
+        <>
+          <ProgramCreate
+            programs={programs}
+            program={program}
+            programsRef={programsRef}
+            getPrograms={getPrograms}
+            setProgram={setProgram}
+            setPrograms={setPrograms}
+          />
 
-      <ProgramUpdate
-        from={from}
-        programs={programs}
-        to={to}
-        fromRatio={fromRatio}
-        toRatio={toRatio}
-        programToEdit={programToEdit}
-        setFrom={setFrom}
-        setFromRatio={setFromRatio}
-        setTo={setTo}
-        setToRatio={setToRatio}
-        programsRef={programsRef}
-        getPrograms={getPrograms}
-        setPrograms={setPrograms}
-        setNewName={setNewName}
-        newName={newName}
-        setProgramToEdit={setProgramToEdit}
-      />
+          <ProgramUpdate
+            from={from}
+            programs={programs}
+            to={to}
+            fromRatio={fromRatio}
+            toRatio={toRatio}
+            programToEdit={programToEdit}
+            setFrom={setFrom}
+            setFromRatio={setFromRatio}
+            setTo={setTo}
+            setToRatio={setToRatio}
+            programsRef={programsRef}
+            getPrograms={getPrograms}
+            setPrograms={setPrograms}
+            setNewName={setNewName}
+            newName={newName}
+            setProgramToEdit={setProgramToEdit}
+          />
 
-      <ProgramDelete
-        setProgramToDelete={setProgramToDelete}
-        getPrograms={getPrograms}
-        setPrograms={setPrograms}
-        programsRef={programsRef}
-        programs={programs}
-        programToDelete={programToDelete}
-      />
+          <ProgramDelete
+            setProgramToDelete={setProgramToDelete}
+            getPrograms={getPrograms}
+            setPrograms={setPrograms}
+            programsRef={programsRef}
+            programs={programs}
+            programToDelete={programToDelete}
+          />
+        </>
+      )}
 
       <ProgramRead programs={programs} />
     </>
