@@ -5,6 +5,7 @@ import {
 } from 'firebase/firebase-firestore';
 
 import './Update.scss';
+import { Program } from '../Program.constants';
 
 interface Props {
   programs: Array<QuerySnapshot>;
@@ -18,10 +19,14 @@ interface Props {
   setFromRatio: (ratio: number) => void;
   setTo: (id: string) => void;
   setToRatio: (ratio: number) => void;
-  getPrograms: () => void;
   setNewName: (name: string) => void;
   newName: string;
   setProgramToEdit: (id: string) => void;
+  getPrograms: (
+    programsRef: CollectionReference,
+    setPrograms: (programs: Array<Program>) => void
+  ) => void;
+  setPrograms: (programs: Array<Program>) => void;
 }
 
 export default (props: Props) => {
@@ -40,7 +45,8 @@ export default (props: Props) => {
     getPrograms,
     setNewName,
     newName,
-    setProgramToEdit
+    setProgramToEdit,
+    setPrograms
   } = props;
 
   const handleFromChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -79,7 +85,7 @@ export default (props: Props) => {
           fromRef.data().name
         } partners successfully at a ${fromRatio}:${toRatio} (${ratio}) ratio.`
       );
-      getPrograms();
+      getPrograms(programsRef, setPrograms);
     } catch (error) {
       console.log(
         `${toRef.data().name} was not added to ${fromRef.data().name} partners.`
@@ -102,7 +108,7 @@ export default (props: Props) => {
       }
       await programsRef.doc(programToEdit).update({ name: newName });
       console.log(`"${name}" successfully changed to "${newName}".`);
-      getPrograms();
+      getPrograms(programsRef, setPrograms);
     } catch (error) {
       console.log(`${name} failed to edit.`, error);
     }

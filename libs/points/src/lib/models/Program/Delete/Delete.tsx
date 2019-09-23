@@ -4,13 +4,18 @@ import {
   CollectionReference
 } from 'firebase/firebase-firestore';
 import './Delete.scss';
+import { Program } from '../Program.constants';
 
 interface Props {
   setProgramToDelete: (id: string) => void;
-  getPrograms: () => void;
   programs: Array<QuerySnapshot>;
   programsRef: CollectionReference;
   programToDelete: string;
+  getPrograms: (
+    programsRef: CollectionReference,
+    setPrograms: (programs: Array<Program>) => void
+  ) => void;
+  setPrograms: (programs: Array<Program>) => void;
 }
 
 export default (props: Props) => {
@@ -19,7 +24,8 @@ export default (props: Props) => {
     programsRef,
     programs,
     programToDelete,
-    getPrograms
+    getPrograms,
+    setPrograms
   } = props;
 
   const handleDeleteChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -28,35 +34,43 @@ export default (props: Props) => {
 
   const handleDeleteProgram = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const deleteRef = programs.find(program => program.id === programToDelete);
+    const deleteRef = programs.find(
+      ({ id }: Program) => id === programToDelete
+    );
     try {
       await programsRef.doc(programToDelete).delete();
       console.log(`${deleteRef.data().name} successfully deleted.`);
-      getPrograms();
+      getPrograms(programsRef, setPrograms);
     } catch (error) {
       console.log(`${deleteRef.data().name} failed to delete.`);
     }
   };
 
+  const programOptions = programs.map(({ id, data }: Program) => {
+    const { name } = data();
+    return (
+      <option value={id} key={id}>
+        {name}
+      </option>
+    );
+  });
+
+  const selectProgram = (
+    <label>
+      Program
+      <select onChange={handleDeleteChange} value={programToDelete} required>
+        <option value="" disabled>
+          ---
+        </option>
+        {programOptions}
+      </select>
+    </label>
+  );
+
   return (
     <form onSubmit={handleDeleteProgram}>
       <h3>Delete a Program</h3>
-      <label>
-        Program
-        <select onChange={handleDeleteChange} value={programToDelete} required>
-          <option value="" disabled>
-            ---
-          </option>
-          {programs.map(ref => {
-            const { name } = ref.data();
-            return (
-              <option value={ref.id} key={ref.id}>
-                {name}
-              </option>
-            );
-          })}
-        </select>
-      </label>
+      {selectProgram}
       <button type="submit">Submit</button>
     </form>
   );

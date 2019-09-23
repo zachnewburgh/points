@@ -5,7 +5,11 @@ import {
   ProgramCreate,
   ProgramDelete,
   ProgramUpdate,
-  ProgramRead
+  ProgramRead,
+  UserRead,
+  UserUpdate,
+  getAccounts,
+  getPrograms
 } from '@points/points';
 
 firebaseUtils.init();
@@ -21,23 +25,23 @@ export const App = () => {
   const [programToDelete, setProgramToDelete] = useState('');
   const [programToEdit, setProgramToEdit] = useState('');
   const [newName, setNewName] = useState('');
+  const [account, setAccount] = useState('');
+  const [accountPoints, setAccountPoints] = useState(0);
+  const [accounts, setAccounts] = useState({});
 
   const db = firebaseUtils.initFirestore();
   const programsRef = db.collection('programs');
-
-  const getPrograms = async () => {
-    if (currentUser) {
-      const programs = await programsRef.orderBy('name').get();
-      setPrograms(programs.docs);
-    }
-  };
+  const usersRef = db.collection('users');
 
   useEffect(() => {
     firebaseUtils.authChanged(setCurrentUser);
   }, []);
 
   useEffect(() => {
-    currentUser && getPrograms();
+    if (currentUser) {
+      getPrograms(programsRef, setPrograms);
+      getAccounts(currentUser, usersRef, setAccounts);
+    }
   }, [currentUser]);
 
   const handleLogin = () => {
@@ -49,8 +53,22 @@ export const App = () => {
   const loggedIn = currentUser && (
     <>
       <button onClick={handleLogin}>Log out</button>
-      <h1>Welcome, {currentUser.displayName}!</h1>
-      <img src={currentUser.photoURL} />
+      <UserRead
+        programs={programs}
+        accounts={accounts}
+        currentUser={currentUser}
+      />
+
+      <UserUpdate
+        account={account}
+        accountPoints={accountPoints}
+        programs={programs}
+        currentUser={currentUser}
+        usersRef={usersRef}
+        setAccount={setAccount}
+        setAccounts={setAccounts}
+        setAccountPoints={setAccountPoints}
+      />
 
       <ProgramCreate
         programs={programs}
@@ -58,6 +76,7 @@ export const App = () => {
         programsRef={programsRef}
         getPrograms={getPrograms}
         setProgram={setProgram}
+        setPrograms={setPrograms}
       />
 
       <ProgramUpdate
@@ -73,6 +92,7 @@ export const App = () => {
         setToRatio={setToRatio}
         programsRef={programsRef}
         getPrograms={getPrograms}
+        setPrograms={setPrograms}
         setNewName={setNewName}
         newName={newName}
         setProgramToEdit={setProgramToEdit}
@@ -81,6 +101,7 @@ export const App = () => {
       <ProgramDelete
         setProgramToDelete={setProgramToDelete}
         getPrograms={getPrograms}
+        setPrograms={setPrograms}
         programsRef={programsRef}
         programs={programs}
         programToDelete={programToDelete}

@@ -5,23 +5,35 @@ import {
 } from 'firebase/firebase-firestore';
 
 import './Create.scss';
+import { Program } from '../Program.constants';
 
 /* eslint-disable-next-line */
 interface Props {
   programs: Array<QuerySnapshot>;
   program: string;
   programsRef: CollectionReference;
-  getPrograms: () => void;
   setProgram: (program: string) => void;
+  getPrograms: (
+    programsRef: CollectionReference,
+    setPrograms: (programs: Array<Program>) => void
+  ) => void;
+  setPrograms: (programs: Array<Program>) => void;
 }
 
 export default (props: Props) => {
-  const { programs, program, programsRef, getPrograms, setProgram } = props;
+  const {
+    programs,
+    program,
+    programsRef,
+    getPrograms,
+    setProgram,
+    setPrograms
+  } = props;
 
   const handleAddProgram = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      if (programs.find(p => p.data().name === program)) {
+      if (programs.find((p: Program) => p.data().name === program)) {
         throw new Error('A program with that name already exists.');
       }
       const docRef = await programsRef.add({
@@ -29,7 +41,7 @@ export default (props: Props) => {
         transferRatiosByPartner: {}
       });
       console.log(`${program} (${docRef.id}) was added successfully.`);
-      getPrograms();
+      getPrograms(programsRef, setPrograms);
     } catch (error) {
       console.log(`${program} was not added successfully.`, error);
     }
