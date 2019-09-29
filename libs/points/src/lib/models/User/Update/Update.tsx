@@ -5,47 +5,47 @@ import {
 } from 'firebase/firebase-firestore';
 
 import './Update.scss';
-import { getAccounts } from '../User.utils';
+import { getBalances } from '../User.utils';
 import { Program } from '../../Program';
 import { UserBalances } from '../User.constants';
 
 interface Props {
-  account: string;
-  accountPoints: number;
+  balance: string;
+  balancePoints: number;
   programs: Array<Program>;
   user: DocumentReference;
   usersRef: CollectionReference;
-  setAccount: (id: string) => void;
-  setAccountPoints: (points: number) => void;
-  setAccounts: (balances: UserBalances) => void;
+  setBalance: (id: string) => void;
+  setBalancePoints: (points: number) => void;
+  setBalances: (balances: UserBalances) => void;
 }
 
 export default (props: Props) => {
   const {
     programs,
-    account,
-    accountPoints,
+    balance,
+    balancePoints,
     user,
     usersRef,
-    setAccount,
-    setAccounts,
-    setAccountPoints
+    setBalance,
+    setBalances,
+    setBalancePoints
   } = props;
 
-  const handleAccountUpdate = async (event: FormEvent) => {
+  const handlebalanceUpdate = async (event: FormEvent) => {
     event.preventDefault();
     const userRef = usersRef.doc(user.id);
-    userRef.set({ balances: { [account]: accountPoints } }, { merge: true });
+    userRef.set({ balances: { [balance]: balancePoints } }, { merge: true });
     const updatedUser = await userRef.get();
-    getAccounts(updatedUser, setAccounts);
+    getBalances(updatedUser, setBalances);
   };
 
-  const handleAccountChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setAccount(event.target.value);
+  const handlebalanceChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setBalance(event.target.value);
   };
 
-  const handleAccountPointsChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setAccountPoints(+event.target.value);
+  const handlebalancePointsChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setBalancePoints(+event.target.value);
   };
 
   const programOptions = programs.map(ref => {
@@ -60,7 +60,7 @@ export default (props: Props) => {
   const selectProgram = (
     <label>
       Program
-      <select onChange={handleAccountChange} value={account} required>
+      <select onChange={handlebalanceChange} value={balance} required>
         <option value="" disabled>
           ---
         </option>
@@ -75,15 +75,15 @@ export default (props: Props) => {
       <input
         type="number"
         step="1"
-        value={accountPoints}
-        onChange={handleAccountPointsChange}
+        value={balancePoints}
+        onChange={handlebalancePointsChange}
         required
       />
     </label>
   );
 
   return (
-    <form onSubmit={handleAccountUpdate}>
+    <form onSubmit={handlebalanceUpdate}>
       <h3>Add a Point Balance</h3>
       {selectProgram}
       {selectBalance}

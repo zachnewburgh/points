@@ -1,11 +1,11 @@
 import { DocumentReference } from 'firebase/firebase-firestore';
 import { UserBalances } from './User.constants';
 
-export const getAccounts = async (
+export const getBalances = async (
   user: DocumentReference,
-  setAccounts: (balances: UserBalances) => void
+  setBalances: (balances: UserBalances) => void
 ) => {
   if (user) {
-    setAccounts(user ? user.data().balances : {});
+    setBalances(user ? user.data().balances : {});
   }
 };
