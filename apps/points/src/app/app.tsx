@@ -8,9 +8,23 @@ import {
   ProgramRead,
   UserRead,
   UserUpdate,
-  getAccounts,
+  getBalances,
   getPrograms
 } from '@points/points';
+
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+  Grid,
+  Avatar,
+  Tooltip,
+  ButtonBase
+} from '@material-ui/core';
+import { Menu as MenuIcon } from '@material-ui/icons';
+import { useStyles } from './app.constants';
 
 firebaseUtils.init();
 
@@ -27,9 +41,11 @@ export const App = () => {
   const [programToDelete, setProgramToDelete] = useState('');
   const [programToEdit, setProgramToEdit] = useState('');
   const [newName, setNewName] = useState('');
-  const [account, setAccount] = useState('');
-  const [accountPoints, setAccountPoints] = useState(0);
-  const [accounts, setAccounts] = useState({});
+  const [balance, setBalance] = useState('');
+  const [balancePoints, setBalancePoints] = useState(0);
+  const [balances, setBalances] = useState({});
+
+  const classes = useStyles({});
 
   const db = firebaseUtils.initFirestore();
   const programsRef = db.collection('programs');
@@ -58,7 +74,7 @@ export const App = () => {
     if (user) {
       getAdmin();
       getPrograms(programsRef, setPrograms);
-      getAccounts(user, setAccounts);
+      getBalances(user, setBalances);
     }
   }, [user]);
 
@@ -68,24 +84,50 @@ export const App = () => {
       : firebaseUtils.login(setCurrentUser);
   };
 
+  const authButton = currentUser ? (
+    <Tooltip title="Log Out">
+      <ButtonBase onClick={handleLogin}>
+        <Avatar alt="user profile" src={currentUser.photoURL} />
+      </ButtonBase>
+    </Tooltip>
+  ) : (
+    <Button color="inherit" onClick={handleLogin}>
+      Log in
+    </Button>
+  );
+
+  const header = (
+    <AppBar position="static">
+      <Toolbar>
+        <IconButton
+          edge="start"
+          className={classes.menuButton}
+          color="inherit"
+          aria-label="menu"
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography variant="h6" className={classes.title}>
+          Points
+        </Typography>
+        {authButton}
+      </Toolbar>
+    </AppBar>
+  );
+
   const loggedIn = currentUser && (
     <>
-      <button onClick={handleLogin}>Log out</button>
-      <UserRead
-        programs={programs}
-        accounts={accounts}
-        currentUser={currentUser}
-      />
+      <UserRead programs={programs} balances={balances} />
 
       <UserUpdate
-        account={account}
-        accountPoints={accountPoints}
+        balance={balance}
+        balancePoints={balancePoints}
         programs={programs}
         usersRef={usersRef}
         user={user}
-        setAccount={setAccount}
-        setAccounts={setAccounts}
-        setAccountPoints={setAccountPoints}
+        setBalance={setBalance}
+        setBalances={setBalances}
+        setBalancePoints={setBalancePoints}
       />
 
       {isAdmin && (
@@ -133,14 +175,18 @@ export const App = () => {
     </>
   );
 
-  const loggedOut = (
+  const loggedOut = <h1>Not logged in.</h1>;
+
+  return (
     <>
-      <button onClick={handleLogin}>Log in</button>
-      <h1>Not logged in.</h1>
+      {header}
+      <Grid className="app__content-container" container>
+        <Grid item xs={12}>
+          {currentUser ? loggedIn : loggedOut}
+        </Grid>
+      </Grid>
     </>
   );
-
-  return currentUser ? loggedIn : loggedOut;
 };
 
 export default App;
