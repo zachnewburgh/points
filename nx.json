@@ -19,6 +19,9 @@
     },
     "firebase": {
       "tags": []
+    },
+    "shared-react-ui": {
+      "tags": []
     }
   }
 }

@@ -24,7 +24,9 @@
     "format:check": "nx format:check",
     "workspace-schematic": "nx workspace-schematic",
     "dep-graph": "nx dep-graph",
-    "help": "nx help"
+    "help": "nx help",
+    "react:lib": "nx g @nrwl/react:lib",
+    "react:component": "nx g @nrwl/react:component"
   },
   "private": true,
   "dependencies": {

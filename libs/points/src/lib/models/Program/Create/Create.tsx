@@ -1,4 +1,4 @@
-import React, { FormEvent } from 'react';
+import React, { FormEvent, ChangeEvent } from 'react';
 import {
   QuerySnapshot,
   CollectionReference
@@ -6,8 +6,9 @@ import {
 
 import './Create.scss';
 import { Program } from '../Program.constants';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { TextInput, PrimaryButton } from '@points/shared-react-ui';
 
-/* eslint-disable-next-line */
 interface Props {
   programs: Array<QuerySnapshot>;
   program: string;
@@ -20,6 +21,21 @@ interface Props {
   setPrograms: (programs: Array<Program>) => void;
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    textField: {
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1)
+    },
+    dense: {
+      marginTop: theme.spacing(2)
+    },
+    button: {
+      margin: theme.spacing(1)
+    }
+  })
+);
+
 export default (props: Props) => {
   const {
     programs,
@@ -29,6 +45,7 @@ export default (props: Props) => {
     setProgram,
     setPrograms
   } = props;
+  const classes = useStyles({});
 
   const handleAddProgram = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -47,18 +64,20 @@ export default (props: Props) => {
     }
   };
 
-  const handleProgramChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProgramChange = (event: ChangeEvent<HTMLInputElement>) => {
     setProgram(event.target.value);
   };
 
   return (
     <form onSubmit={handleAddProgram}>
       <h3>Add Program</h3>
-      <label>
-        Program Name
-        <input type="text" onChange={handleProgramChange} required />
-      </label>
-      <button type="submit">Submit</button>
+      <TextInput
+        handleOnChange={handleProgramChange}
+        label="Program Name"
+        id="program-name"
+        helperText="Add a Program Name"
+      />
+      <PrimaryButton type="submit" />
     </form>
   );
 };

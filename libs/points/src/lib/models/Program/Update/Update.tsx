@@ -6,6 +6,7 @@ import {
 
 import './Update.scss';
 import { Program } from '../Program.constants';
+import { TextInput, PrimaryButton, Select } from '@points/shared-react-ui';
 
 interface Props {
   programs: Array<QuerySnapshot>;
@@ -118,94 +119,65 @@ export default (props: Props) => {
     setProgramToEdit(event.target.value);
   };
 
+  const programOptions = programs.map(ref => {
+    const { name } = ref.data();
+    return { value: ref.id, label: name };
+  });
+
   return (
     <>
       <form onSubmit={handleAddTransfer}>
         <h3>Add a Transfer Partner</h3>
-        <label>
-          From
-          <select onChange={handleFromChange} value={from} required>
-            <option value="" disabled>
-              ---
-            </option>
-            {programs.map(ref => {
-              const { name } = ref.data();
-              return (
-                <option value={ref.id} key={ref.id}>
-                  {name}
-                </option>
-              );
-            })}
-          </select>
-        </label>
-        <label>
-          To
-          <select onChange={handleToChange} value={to} required>
-            <option value="" disabled>
-              ---
-            </option>
-            {programs
-              .filter(ref => ref.id != from)
-              .map(ref => {
-                const { name } = ref.data();
-                return (
-                  <option value={ref.id} key={ref.id}>
-                    {name}
-                  </option>
-                );
-              })}
-          </select>
-        </label>
-        <label>
-          From Ratio
-          <input
-            type="number"
-            step="0.01"
-            value={fromRatio}
-            onChange={handleFromRatioChange}
-            required
-          />
-        </label>
-        <label>
-          To Ratio
-          <input
-            type="number"
-            step="0.01"
-            value={toRatio}
-            onChange={handleToRatioChange}
-            required
-          />
-        </label>
-        <button type="submit">Submit</button>
+        <Select
+          id="edit-program-from"
+          label="From"
+          helperText="From"
+          handleOnChange={handleFromChange}
+          value={from}
+          options={programOptions}
+        />
+        <Select
+          id="edit-program-to"
+          label="To"
+          helperText="To"
+          handleOnChange={handleToChange}
+          value={to}
+          options={programOptions.filter(option => option.value != from)}
+        />
+        <TextInput
+          id="from-ratio"
+          label="From Ratio"
+          helperText="From Ratio"
+          handleOnChange={handleFromRatioChange}
+          value={fromRatio}
+        />
+        <TextInput
+          id="to-ratio"
+          label="To Ratio"
+          helperText="To Ratio"
+          handleOnChange={handleToRatioChange}
+          value={toRatio}
+        />
+        <PrimaryButton type="submit" />
       </form>
 
       <form onSubmit={handleEditProgram}>
         <h3>Edit a Program Name</h3>
-        <label>
-          Program
-          <select
-            onChange={handleEditProgramChange}
-            value={programToEdit}
-            required
-          >
-            <option value="" disabled>
-              ---
-            </option>
-            {programs.map(ref => {
-              const { name } = ref.data();
-              return (
-                <option value={ref.id} key={ref.id}>
-                  {name}
-                </option>
-              );
-            })}
-          </select>
-        </label>
-        <label>
-          New Name
-          <input type="text" onChange={handleNewName} />
-        </label>
-        <button type="submit">Submit</button>
+        <Select
+          id="edit-program-name"
+          label="Program Name"
+          helperText="Program to edit"
+          handleOnChange={handleEditProgramChange}
+          value={programToEdit}
+          options={programOptions}
+        />
+        <TextInput
+          id="new-program-name"
+          label="New Name"
+          helperText="Edit the program name."
+          handleOnChange={handleNewName}
+        />
+        <PrimaryButton type="submit" />
       </form>
     </>
   );

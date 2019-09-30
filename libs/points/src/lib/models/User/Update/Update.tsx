@@ -8,6 +8,7 @@ import './Update.scss';
 import { getBalances } from '../User.utils';
 import { Program } from '../../Program';
 import { UserBalances } from '../User.constants';
+import { PrimaryButton, TextInput, Select } from '@points/shared-react-ui';
 
 interface Props {
   balance: string;
@@ -40,7 +41,7 @@ export default (props: Props) => {
     getBalances(updatedUser, setBalances);
   };
 
-  const handlebalanceChange = (event: ChangeEvent<HTMLSelectElement>) => {
+  const handleBalanceChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setBalance(event.target.value);
   };
 
@@ -50,36 +51,28 @@ export default (props: Props) => {
 
   const programOptions = programs.map(ref => {
     const { name } = ref.data();
-    return (
-      <option value={ref.id} key={ref.id}>
-        {name}
-      </option>
-    );
+    return { value: ref.id, label: name };
   });
 
   const selectProgram = (
-    <label>
-      Program
-      <select onChange={handlebalanceChange} value={balance} required>
-        <option value="" disabled>
-          ---
-        </option>
-        {programOptions}
-      </select>
-    </label>
+    <Select
+      id="edit-program-from"
+      label="From"
+      helperText="From"
+      handleOnChange={handleBalanceChange}
+      value={balance}
+      options={programOptions}
+    />
   );
 
   const selectBalance = (
-    <label>
-      Balance
-      <input
-        type="number"
-        step="1"
-        value={balancePoints}
-        onChange={handlebalancePointsChange}
-        required
-      />
-    </label>
+    <TextInput
+      id="program-balance"
+      label="Program Balance"
+      helperText="Program Balance"
+      value={balancePoints}
+      handleOnChange={handlebalancePointsChange}
+    />
   );
 
   return (
@@ -87,7 +80,7 @@ export default (props: Props) => {
       <h3>Add a Point Balance</h3>
       {selectProgram}
       {selectBalance}
-      <button type="submit">Submit</button>
+      <PrimaryButton type="submit" />
     </form>
   );
 };
