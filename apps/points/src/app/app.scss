@@ -2,6 +2,7 @@
   &__content-container {
     flex: 1;
     overflow-x: scroll;
-    margin: 1%;
+    display: flex;
+    justify-content: center;
   }
 }

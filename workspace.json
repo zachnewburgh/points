@@ -48,11 +48,11 @@
         "serve": {
           "builder": "@nrwl/web:dev-server",
           "options": {
-            "buildTarget": "points:build"
+            "buildTarget": "app:build"
           },
           "configurations": {
             "production": {
-              "buildTarget": "points:build:production"
+              "buildTarget": "app:build:production"
             }
           }
         },
