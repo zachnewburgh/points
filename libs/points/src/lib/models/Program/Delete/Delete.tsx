@@ -5,6 +5,7 @@ import {
 } from 'firebase/firebase-firestore';
 import './Delete.scss';
 import { Program } from '../Program.constants';
+import { PrimaryButton, Select } from '@points/shared-react-ui';
 
 interface Props {
   setProgramToDelete: (id: string) => void;
@@ -48,30 +49,25 @@ export default (props: Props) => {
 
   const programOptions = programs.map((program: Program) => {
     const { name } = program.data();
-    return (
-      <option value={program.id} key={program.id}>
-        {name}
-      </option>
-    );
+    return { value: program.id, label: name };
   });
 
   const selectProgram = (
-    <label>
-      Program
-      <select onChange={handleDeleteChange} value={programToDelete} required>
-        <option value="" disabled>
-          ---
-        </option>
-        {programOptions}
-      </select>
-    </label>
+    <Select
+      id="delete-program"
+      label="Program"
+      helperText="Program to delete"
+      handleOnChange={handleDeleteChange}
+      value={programToDelete}
+      options={programOptions}
+    />
   );
 
   return (
     <form onSubmit={handleDeleteProgram}>
       <h3>Delete a Program</h3>
       {selectProgram}
-      <button type="submit">Submit</button>
+      <PrimaryButton type="submit" />
     </form>
   );
 };

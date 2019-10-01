@@ -1,6 +1,37 @@
-import * as firebaseUtils from '@points/firebase';
 import React, { useState, useEffect } from 'react';
-import './app.scss';
+import clsx from 'clsx';
+import { useTheme } from '@material-ui/core/styles';
+import {
+  Drawer,
+  AppBar,
+  Toolbar,
+  List,
+  CssBaseline,
+  Typography,
+  Divider,
+  IconButton,
+  Grid,
+  Avatar,
+  Button,
+  ButtonBase,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Tooltip,
+  Icon
+} from '@material-ui/core';
+
+import {
+  Menu as MenuIcon,
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
+  MoveToInbox as InboxIcon,
+  Mail as MailIcon
+} from '@material-ui/icons';
+
+import { useStyles } from './app.constants';
+
+import * as firebaseUtils from '@points/firebase';
 import {
   ProgramCreate,
   ProgramDelete,
@@ -12,23 +43,12 @@ import {
   getPrograms
 } from '@points/points';
 
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-  IconButton,
-  Grid,
-  Avatar,
-  Tooltip,
-  ButtonBase
-} from '@material-ui/core';
-import { Menu as MenuIcon } from '@material-ui/icons';
-import { useStyles } from './app.constants';
-
 firebaseUtils.init();
 
-export const App = () => {
+export default () => {
+  const classes = useStyles({});
+  const theme = useTheme();
+  const [open, setOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [user, setUser] = useState(null);
@@ -45,7 +65,11 @@ export const App = () => {
   const [balancePoints, setBalancePoints] = useState(0);
   const [balances, setBalances] = useState({});
 
-  const classes = useStyles({});
+  const tabs = [
+    { name: 'Flights', icon: 'flight_takeoff' },
+    { name: 'Hotels', icon: 'hotel' },
+    { name: 'My Account', icon: 'account_balance' }
+  ];
 
   const db = firebaseUtils.initFirestore();
   const programsRef = db.collection('programs');
@@ -84,6 +108,14 @@ export const App = () => {
       : firebaseUtils.login(setCurrentUser);
   };
 
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
   const authButton = currentUser ? (
     <Tooltip title="Log Out">
       <ButtonBase onClick={handleLogin}>
@@ -97,13 +129,21 @@ export const App = () => {
   );
 
   const header = (
-    <AppBar position="static">
+    <AppBar
+      position="fixed"
+      className={clsx(classes.appBar, {
+        [classes.appBarShift]: open
+      })}
+    >
       <Toolbar>
         <IconButton
           edge="start"
-          className={classes.menuButton}
           color="inherit"
-          aria-label="menu"
+          aria-label="open drawer"
+          onClick={handleDrawerOpen}
+          className={clsx(classes.menuButton, {
+            [classes.hide]: open
+          })}
         >
           <MenuIcon />
         </IconButton>
@@ -113,6 +153,50 @@ export const App = () => {
         {authButton}
       </Toolbar>
     </AppBar>
+  );
+
+  const drawer = (
+    <Drawer
+      className={classes.drawer}
+      variant="persistent"
+      anchor="left"
+      open={open}
+      classes={{
+        paper: classes.drawerPaper
+      }}
+    >
+      <div className={classes.drawerHeader}>
+        <IconButton onClick={handleDrawerClose}>
+          {theme.direction === 'rtl' ? (
+            <ChevronRightIcon />
+          ) : (
+            <ChevronLeftIcon />
+          )}
+        </IconButton>
+      </div>
+      <Divider />
+      <List>
+        {tabs.slice(0, tabs.length - 1).map((tab, index) => (
+          <ListItem button key={index}>
+            <ListItemIcon>
+              <Icon>{tab.icon}</Icon>
+            </ListItemIcon>
+            <ListItemText primary={tab.name} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {tabs.slice(tabs.length - 1).map((tab, index) => (
+          <ListItem button key={index}>
+            <ListItemIcon>
+              <Icon>{tab.icon}</Icon>
+            </ListItemIcon>
+            <ListItemText primary={tab.name} />
+          </ListItem>
+        ))}
+      </List>
+    </Drawer>
   );
 
   const loggedIn = currentUser && (
@@ -177,16 +261,27 @@ export const App = () => {
 
   const loggedOut = <h1>Not logged in.</h1>;
 
-  return (
-    <>
-      {header}
-      <Grid className="app__content-container" container>
+  const content = (
+    <main
+      className={clsx(classes.content, {
+        [classes.contentShift]: open
+      })}
+    >
+      <div className={classes.drawerHeader} />
+      <Grid container>
         <Grid item xs={12}>
           {currentUser ? loggedIn : loggedOut}
         </Grid>
       </Grid>
-    </>
+    </main>
+  );
+
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      {header}
+      {drawer}
+      {content}
+    </div>
   );
 };
-
-export default App;

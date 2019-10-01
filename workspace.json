@@ -48,11 +48,11 @@
         "serve": {
           "builder": "@nrwl/web:dev-server",
           "options": {
-            "buildTarget": "points:build"
+            "buildTarget": "app:build"
           },
           "configurations": {
             "production": {
-              "buildTarget": "points:build:production"
+              "buildTarget": "app:build:production"
             }
           }
         },
@@ -156,6 +156,33 @@
           "options": {
             "jestConfig": "libs/firebase/jest.config.js",
             "tsConfig": "libs/firebase/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "shared-react-ui": {
+      "root": "libs/shared-react-ui",
+      "sourceRoot": "libs/shared-react-ui/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "config": "libs/shared-react-ui/.eslintrc",
+            "tsConfig": [
+              "libs/shared-react-ui/tsconfig.lib.json",
+              "libs/shared-react-ui/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/shared-react-ui/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/shared-react-ui/jest.config.js",
+            "tsConfig": "libs/shared-react-ui/tsconfig.spec.json"
           }
         }
       }

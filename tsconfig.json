@@ -17,7 +17,8 @@
     "baseUrl": ".",
     "paths": {
       "@points/firebase": ["libs/firebase/src/index.ts"],
-      "@points/points": ["libs/points/src/index.ts"]
+      "@points/points": ["libs/points/src/index.ts"],
+      "@points/shared-react-ui": ["libs/shared-react-ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
