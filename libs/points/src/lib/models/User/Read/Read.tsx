@@ -1,8 +1,9 @@
 import React from 'react';
 
 import './Read.scss';
-import { UserBalances, CurrentUser } from '../User.constants';
+import { UserBalances } from '../User.constants';
 import { Program } from '../../Program';
+import { Paper, Typography } from '@material-ui/core';
 
 interface Props {
   balances: UserBalances;
@@ -12,20 +13,28 @@ interface Props {
 export default (props: Props) => {
   const { balances, programs } = props;
 
-  const balanceList = Object.keys(balances).map((programId: string) => {
-    const program = programs.find(({ id }: Program) => id === programId);
-    const programName = program && program.data().name;
+  const balanceList = Object.keys(balances).map(
+    (programId: string, index: number) => {
+      const program = programs.find(({ id }: Program) => id === programId);
+      const programName = program && program.data().name;
 
-    return (
-      <li key={programId}>
-        {programName}: {balances[programId]}
-      </li>
-    );
-  });
+      return (
+        <Paper className="balance" key={index}>
+          <Typography variant="h5" component="h3">
+            {programName}
+          </Typography>
+          <Typography component="p">{balances[programId]}</Typography>
+        </Paper>
+      );
+    }
+  );
 
   return (
-    <>
-      <ul>{balanceList}</ul>
-    </>
+    <section className="my-account">
+      <Typography variant="h4" component="h4">
+        Balances
+      </Typography>
+      <div className="balances">{balanceList}</div>
+    </section>
   );
 };
