@@ -1,0 +1,23 @@
+.balances {
+  display: flex;
+  flex-wrap: wrap;
+
+  .balance {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 25px;
+    padding: 25px;
+    min-width: 250px;
+    min-height: 250px;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #ff4081;
+      color: white;
+    }
+  }
+}
