@@ -22,6 +22,12 @@
     },
     "shared-react-ui": {
       "tags": []
+    },
+    "shared-react-state": {
+      "tags": []
+    },
+    "shared-models": {
+      "tags": []
     }
   }
 }

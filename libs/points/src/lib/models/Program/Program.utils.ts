@@ -1,5 +1,5 @@
 import { CollectionReference } from 'firebase/firebase-firestore';
-import { Program } from './Program.constants';
+import { Program } from '@points/shared-models';
 
 export const getPrograms = async (
   programsRef: CollectionReference,

@@ -1,5 +1,5 @@
 import { DocumentReference } from 'firebase/firebase-firestore';
-import { UserBalances } from './User.constants';
+import { UserBalances } from '@points/shared-models';
 
 export const getBalances = async (
   user: DocumentReference,

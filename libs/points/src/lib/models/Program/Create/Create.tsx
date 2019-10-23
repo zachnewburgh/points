@@ -5,7 +5,7 @@ import {
 } from 'firebase/firebase-firestore';
 
 import './Create.scss';
-import { Program } from '../Program.constants';
+import { Program } from '@points/shared-models';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { TextInput, PrimaryButton } from '@points/shared-react-ui';
 

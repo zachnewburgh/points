@@ -6,8 +6,7 @@ import {
 
 import './Update.scss';
 import { getBalances } from '../User.utils';
-import { Program } from '../../Program';
-import { UserBalances } from '../User.constants';
+import { UserBalances, Program } from '@points/shared-models';
 import { PrimaryButton, TextInput, Select } from '@points/shared-react-ui';
 
 interface Props {

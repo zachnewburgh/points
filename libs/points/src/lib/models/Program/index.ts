@@ -3,4 +3,3 @@ export * from './Delete';
 export * from './Read';
 export * from './Update';
 export * from './Program.utils';
-export * from './Program.constants';

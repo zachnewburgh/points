@@ -1,14 +1,10 @@
-import {
-  ProgramCreate,
-  ProgramUpdate,
-  ProgramDelete,
-  Program
-} from '../../models';
+import { ProgramCreate, ProgramUpdate, ProgramDelete } from '../../models';
 import {
   QuerySnapshot,
   CollectionReference
 } from 'firebase/firebase-firestore';
 import React from 'react';
+import { Program } from '@points/shared-models';
 
 interface Props {
   programs: Array<QuerySnapshot>;

@@ -36,7 +36,9 @@
     "firebase": "^6.5.0",
     "react": "16.9.0",
     "react-dom": "16.9.0",
+    "react-redux": "^7.1.1",
     "react-router-dom": "5.0.1",
+    "redux": "^4.0.4",
     "typeface-roboto": "^0.0.75"
   },
   "devDependencies": {
@@ -64,6 +66,7 @@
     "eslint-plugin-react-hooks": "1.6.1",
     "jest": "24.1.0",
     "prettier": "1.16.4",
+    "redux-devtools": "^3.5.0",
     "ts-jest": "24.0.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
