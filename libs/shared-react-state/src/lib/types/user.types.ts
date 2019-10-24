@@ -1,6 +1,6 @@
 import { User } from '@points/shared-models';
 
-export enum ActionTypes {
+export enum UserActionTypes {
   Login = '[USER] Login',
   LoginSuccess = '[USER] Login Success',
   LoginFailure = '[USER] Login Failure',
@@ -19,65 +19,65 @@ export enum ActionTypes {
 }
 
 interface loginAction {
-  type: ActionTypes.Login;
+  type: UserActionTypes.Login;
 }
 interface loginSuccessAction {
-  type: ActionTypes.LoginSuccess;
+  type: UserActionTypes.LoginSuccess;
   payload: User;
 }
 interface loginFailureAction {
-  type: ActionTypes.LoginFailure;
+  type: UserActionTypes.LoginFailure;
   payload: Error;
 }
 interface logoutAction {
-  type: ActionTypes.Logout;
+  type: UserActionTypes.Logout;
 }
 interface logoutSuccessAction {
-  type: ActionTypes.LogoutSuccess;
+  type: UserActionTypes.LogoutSuccess;
   payload: User;
 }
 interface logoutFailureAction {
-  type: ActionTypes.LogoutFailure;
+  type: UserActionTypes.LogoutFailure;
   payload: Error;
 }
 interface addUserAction {
-  type: ActionTypes.Add;
+  type: UserActionTypes.Add;
   payload: User;
 }
 interface addUserSuccessAction {
-  type: ActionTypes.AddSuccess;
+  type: UserActionTypes.AddSuccess;
   payload: string;
 }
 interface addUserFailureAction {
-  type: ActionTypes.AddFailure;
+  type: UserActionTypes.AddFailure;
   payload: { user: User; error: Error };
 }
 interface updateUserAction {
-  type: ActionTypes.Update;
+  type: UserActionTypes.Update;
   payload: Partial<User>;
 }
 interface updateUserSuccessAction {
-  type: ActionTypes.UpdateSuccess;
+  type: UserActionTypes.UpdateSuccess;
   payload: string;
 }
 interface updateUserFailureAction {
-  type: ActionTypes.UpdateFailure;
+  type: UserActionTypes.UpdateFailure;
   payload: { userPartial; error: Error };
 }
 interface deleteUserAction {
-  type: ActionTypes.Delete;
+  type: UserActionTypes.Delete;
   payload: string;
 }
 interface deleteUserSuccessAction {
-  type: ActionTypes.DeleteSuccess;
+  type: UserActionTypes.DeleteSuccess;
   payload: string;
 }
 interface deleteUserFailureAction {
-  type: ActionTypes.DeleteFailure;
+  type: UserActionTypes.DeleteFailure;
   payload: { userId: string; error: Error };
 }
 
-export type ActionType =
+export type UserActionType =
   | loginAction
   | loginSuccessAction
   | loginFailureAction

@@ -1,6 +1,6 @@
 import { Program } from '@points/shared-models';
 
-export enum ActionTypes {
+export enum ProgramActionTypes {
   GetAll = '[PROGRAM] Get All',
   GetAllSuccess = '[PROGRAM] Get All Success',
   GetAllFailure = '[PROGRAM] Get All Failure',
@@ -19,66 +19,66 @@ export enum ActionTypes {
 }
 
 interface getAll {
-  type: ActionTypes.GetAll;
+  type: ProgramActionTypes.GetAll;
 }
 interface getAllSuccess {
-  type: ActionTypes.GetAllSuccess;
+  type: ProgramActionTypes.GetAllSuccess;
   payload: Array<Program>;
 }
 interface getAllFailure {
-  type: ActionTypes.GetAllFailure;
+  type: ProgramActionTypes.GetAllFailure;
   payload: Error;
 }
 interface getById {
-  type: ActionTypes.GetById;
+  type: ProgramActionTypes.GetById;
   payload: string;
 }
 interface getByIdSuccess {
-  type: ActionTypes.GetByIdSuccess;
+  type: ProgramActionTypes.GetByIdSuccess;
   payload: Program;
 }
 interface getByIdFailure {
-  type: ActionTypes.GetByIdFailure;
+  type: ProgramActionTypes.GetByIdFailure;
   payload: Error;
 }
 interface addProgram {
-  type: ActionTypes.Add;
+  type: ProgramActionTypes.Add;
   payload: Program;
 }
 interface addProgramSuccess {
-  type: ActionTypes.AddSuccess;
+  type: ProgramActionTypes.AddSuccess;
   payload: Program;
 }
 interface addProgramFailure {
-  type: ActionTypes.AddFailure;
+  type: ProgramActionTypes.AddFailure;
   payload: Error;
 }
 interface updateProgram {
-  type: ActionTypes.Update;
+  type: ProgramActionTypes.Update;
   payload: Partial<Program>;
 }
 interface updateProgramSuccess {
-  type: ActionTypes.UpdateSuccess;
+  type: ProgramActionTypes.UpdateSuccess;
   payload: Program;
 }
 interface updateProgramFailure {
-  type: ActionTypes.UpdateFailure;
+  type: ProgramActionTypes.UpdateFailure;
   payload: Error;
 }
 interface deleteProgram {
-  type: ActionTypes.Delete;
+  type: ProgramActionTypes.Delete;
   payload: string;
 }
 interface deleteProgramSuccess {
-  type: ActionTypes.DeleteSuccess;
+  type: ProgramActionTypes.DeleteSuccess;
   payload: string;
 }
 interface deleteProgramFailure {
-  type: ActionTypes.DeleteFailure;
+  type: ProgramActionTypes.DeleteFailure;
   payload: Error;
 }
 
-export type ActionType =
+export type ProgramActionType =
   | getAll
   | getAllSuccess
   | getAllFailure
