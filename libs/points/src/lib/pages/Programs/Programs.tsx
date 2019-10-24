@@ -1,9 +1,10 @@
 import React from 'react';
-import { UserRead, UserUpdate, Program, UserBalances } from '../../models';
+import { UserRead, UserUpdate } from '../../models';
 import {
   DocumentReference,
   CollectionReference
 } from 'firebase/firebase-firestore';
+import { Program, UserBalances } from '@points/shared-models';
 
 interface Props {
   programs: Array<Program>;

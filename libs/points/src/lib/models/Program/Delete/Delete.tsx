@@ -4,7 +4,7 @@ import {
   CollectionReference
 } from 'firebase/firebase-firestore';
 import './Delete.scss';
-import { Program } from '../Program.constants';
+import { Program } from '@points/shared-models';
 import { PrimaryButton, Select } from '@points/shared-react-ui';
 
 interface Props {

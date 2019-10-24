@@ -186,6 +186,60 @@
           }
         }
       }
+    },
+    "shared-react-state": {
+      "root": "libs/shared-react-state",
+      "sourceRoot": "libs/shared-react-state/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "config": "libs/shared-react-state/.eslintrc",
+            "tsConfig": [
+              "libs/shared-react-state/tsconfig.lib.json",
+              "libs/shared-react-state/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/shared-react-state/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/shared-react-state/jest.config.js",
+            "tsConfig": "libs/shared-react-state/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "shared-models": {
+      "root": "libs/shared-models",
+      "sourceRoot": "libs/shared-models/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "config": "libs/shared-models/.eslintrc",
+            "tsConfig": [
+              "libs/shared-models/tsconfig.lib.json",
+              "libs/shared-models/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/shared-models/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/shared-models/jest.config.js",
+            "tsConfig": "libs/shared-models/tsconfig.spec.json"
+          }
+        }
+      }
     }
   },
   "cli": {

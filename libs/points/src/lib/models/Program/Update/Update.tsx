@@ -5,7 +5,7 @@ import {
 } from 'firebase/firebase-firestore';
 
 import './Update.scss';
-import { Program } from '../Program.constants';
+import { Program } from '@points/shared-models';
 import { TextInput, PrimaryButton, Select } from '@points/shared-react-ui';
 
 interface Props {

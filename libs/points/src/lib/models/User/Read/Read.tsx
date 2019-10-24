@@ -1,8 +1,7 @@
 import React from 'react';
 
 import './Read.scss';
-import { UserBalances } from '../User.constants';
-import { Program } from '../../Program';
+import { UserBalances, Program } from '@points/shared-models';
 import { Paper, Typography } from '@material-ui/core';
 
 interface Props {

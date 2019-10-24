@@ -2,13 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'typeface-roboto';
 
-import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './store';
 
 import App from './app/app';
 
+const rootElement = document.getElementById('root');
 ReactDOM.render(
-  <BrowserRouter>
+  <Provider store={store}>
     <App />
-  </BrowserRouter>,
-  document.getElementById('root')
+  </Provider>,
+  rootElement
 );

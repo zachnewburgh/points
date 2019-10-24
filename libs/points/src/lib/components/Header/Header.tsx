@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import { Menu as MenuIcon } from '@material-ui/icons';
 import clsx from 'clsx';
-import { CurrentUser } from '../../models';
+import { CurrentUser } from '@points/shared-models';
 
 interface Props {
   classes: Record<string, string>;
