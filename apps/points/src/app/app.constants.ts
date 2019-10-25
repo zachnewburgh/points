@@ -22,7 +22,9 @@ export const useStyles = makeStyles((theme: Theme) =>
       })
     },
     title: {
-      flexGrow: 1
+      flexGrow: 1,
+      cursor: 'pointer',
+      userSelect: 'none'
     },
     menuButton: {
       marginRight: theme.spacing(2)

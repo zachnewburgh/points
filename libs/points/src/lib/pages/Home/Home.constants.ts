@@ -20,7 +20,8 @@ export const cards = [
     title: 'Plan a trip',
     body: `Identify the most efficient use of your hard-earned points and
         discover routes that would maximize their value.`,
-    action: 'Trip'
+    action: 'Trip',
+    link: '/trips'
   },
   {
     img: {
@@ -32,7 +33,8 @@ export const cards = [
     title: 'Review your balances',
     body: `Check out your program balances and learn what they're worth
         across every available partner program.`,
-    action: 'Programs'
+    action: 'Programs',
+    link: '/programs'
   },
   {
     img: {
@@ -44,7 +46,8 @@ export const cards = [
     title: 'Earn a bonus',
     body: `Explore credit card offerings to view valuable benefits and
         fast-track your point earnings.`,
-    action: 'Cards'
+    action: 'Cards',
+    link: '/cards'
   },
   {
     img: {
@@ -56,6 +59,7 @@ export const cards = [
     title: 'Read the blog',
     body: `Be the first to find out about program changes, transfer
         bonuses, and travel musts.`,
-    action: 'Blog'
+    action: 'Blog',
+    link: '/blog'
   }
 ];
