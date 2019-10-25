@@ -92,6 +92,7 @@ export default () => {
       handleLogin={handleLogin}
       currentUser={currentUser}
       open={open}
+      history={history}
     />
   );
 

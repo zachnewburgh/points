@@ -12,6 +12,7 @@ import {
 import { Menu as MenuIcon } from '@material-ui/icons';
 import clsx from 'clsx';
 import { CurrentUser } from '@points/shared-models';
+import { History } from 'history';
 
 interface Props {
   classes: Record<string, string>;
@@ -19,10 +20,18 @@ interface Props {
   open: boolean;
   handleLogin: () => void;
   currentUser: CurrentUser;
+  history: History;
 }
 
 export default (props: Props) => {
-  const { classes, handleDrawerOpen, open, handleLogin, currentUser } = props;
+  const {
+    classes,
+    handleDrawerOpen,
+    open,
+    handleLogin,
+    currentUser,
+    history
+  } = props;
 
   const authButton = currentUser ? (
     <Tooltip title="Log Out">
@@ -55,7 +64,11 @@ export default (props: Props) => {
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" className={classes.title}>
+        <Typography
+          variant="h6"
+          className={classes.title}
+          onClick={() => history.push('/')}
+        >
           Points
         </Typography>
         {authButton}
