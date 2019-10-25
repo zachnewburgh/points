@@ -15,6 +15,8 @@ import {
   Sidebar
 } from '@points/points';
 import './app.scss';
+import { Router, Switch, Route } from 'react-router-dom';
+import history from '../history';
 
 firebaseUtils.init();
 
@@ -98,6 +100,7 @@ export default () => {
       classes={classes}
       open={open}
       handleDrawerClose={handleDrawerClose}
+      handleClick={history.push}
       theme={theme}
     />
   );
@@ -128,22 +131,34 @@ export default () => {
   );
 
   const loggedIn = currentUser && (
-    <>
-      <Home />
-      <Programs
-        programs={programs}
-        balances={balances}
-        balance={balance}
-        balancePoints={balancePoints}
-        usersRef={usersRef}
-        user={user}
-        setBalance={setBalance}
-        setBalances={setBalances}
-        setBalancePoints={setBalancePoints}
-      />
-      {isAdmin && admin}
-      <ProgramRead programs={programs} />
-    </>
+    <Router history={history}>
+      <Switch>
+        <Route path="/trips">Trips</Route>
+        <Route path="/blog">Blog</Route>
+        <Route path="/cards">Cards</Route>
+        <Route path="/account">Account</Route>
+        <Route path="/admin">{isAdmin ? admin : 'Restricted'}</Route>
+        <Route path="/programs">
+          <>
+            <Programs
+              programs={programs}
+              balances={balances}
+              balance={balance}
+              balancePoints={balancePoints}
+              usersRef={usersRef}
+              user={user}
+              setBalance={setBalance}
+              setBalances={setBalances}
+              setBalancePoints={setBalancePoints}
+            />
+            <ProgramRead programs={programs} />
+          </>
+        </Route>
+        <Route path="/">
+          <Home history={history} />
+        </Route>
+      </Switch>
+    </Router>
   );
 
   const loggedOut = <h1>Not logged in.</h1>;

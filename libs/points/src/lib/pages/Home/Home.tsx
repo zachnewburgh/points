@@ -10,14 +10,24 @@ import {
 } from '@material-ui/core';
 import { useStyles, cards } from './Home.constants';
 import './Home.scss';
+import { History } from 'history';
 
-export default () => {
+interface Props {
+  history: History;
+}
+
+export default (props: Props) => {
   const classes = useStyles({});
+  const { history } = props;
 
   return (
     <section className="home">
       {cards.map((card, index) => (
-        <Card className={classes.card} key={index}>
+        <Card
+          className={classes.card}
+          key={index}
+          onClick={() => history.push(card.link)}
+        >
           <CardActionArea>
             <CardMedia
               component="img"
