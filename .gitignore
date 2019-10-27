@@ -40,3 +40,4 @@ Thumbs.db
 
 # Firebase
 libs/firebase/src/lib/secrets.ts
+.firebase/*
