@@ -1,23 +1,64 @@
-.balances {
+.my-account {
   display: flex;
-  flex-wrap: wrap;
 
-  .balance {
-    flex: 1;
+  .accounts {
+    width: 100%;
+
+    .account {
+      padding: 24px;
+      margin: 24px 0;
+      cursor: pointer;
+
+      &.active-account {
+        border-top: 6px solid #ff4081;
+        padding-top: 18px;
+      }
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &:hover {
+        background-color: #ff4081;
+        color: white;
+      }
+
+      &__details {
+        display: flex;
+        justify-content: space-between;
+
+        &__type {
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+
+  .account-info {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .my-account {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin: 25px;
-    padding: 25px;
-    min-width: 250px;
-    min-height: 250px;
-    text-align: center;
-    cursor: pointer;
 
-    &:hover {
-      background-color: #ff4081;
-      color: white;
+    .accounts {
+      width: 25%;
+      padding: 0 18px 0 0;
+      overflow: scroll;
+      height: 660px;
+    }
+
+    .account-info {
+      display: block;
+      width: 75%;
+
+      &__card {
+        margin: 0 0 24px 6px;
+        padding: 24px;
+        height: 660px;
+      }
     }
   }
 }
