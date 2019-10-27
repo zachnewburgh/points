@@ -10,17 +10,12 @@
       cursor: pointer;
 
       &.active-account {
-        border-top: 6px solid #ff4081;
+        border-top: 6px solid #3f51b5;
         padding-top: 18px;
       }
 
       &:first-child {
         margin-top: 0;
-      }
-
-      &:hover {
-        background-color: #ff4081;
-        color: white;
       }
 
       &__details {
@@ -56,6 +51,7 @@
 
       &__card {
         margin: 0 0 24px 6px;
+        border-top: 6px solid #3f51b5;
         padding: 24px;
         height: 660px;
       }
