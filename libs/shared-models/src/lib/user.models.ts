@@ -1,5 +1,5 @@
 export interface UserBalances {
-  [id: string]: string;
+  [id: string]: number;
 }
 
 export interface CurrentUser {
