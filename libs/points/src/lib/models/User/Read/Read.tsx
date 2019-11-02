@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import './Read.scss';
 import { UserBalances, Program } from '@points/shared-models';
 import { Paper, Typography } from '@material-ui/core';
+import { ProgramRead } from '../../Program';
 
 interface Props {
   balances: UserBalances;
@@ -54,28 +55,38 @@ export default (props: Props) => {
     { name, balance, isPartner }: ProgramDetails,
     index: number
   ) => (
-    <Paper
-      className={`account${
-        activeProgram === index ? ' active-account' : ' inactive-account'
-      }`}
-      key={index}
-      onClick={() => setActiveProgram(index)}
-    >
-      <Typography
-        variant="h6"
-        component="h6"
-        className="account__details__name"
-        noWrap={true}
+    <div className="account__card__container" key={index}>
+      <Paper
+        className={`account${
+          activeProgram === index ? ' active-account' : ' inactive-account'
+        }`}
+        onClick={() => setActiveProgram(index)}
       >
-        {name}
-      </Typography>
-      <div className="account__details">
-        <Typography component="p">{balance}</Typography>
-        <Typography component="p" className="account__details__type">
-          {isPartner ? 'partner' : 'account'}
+        <Typography
+          variant="h6"
+          component="h6"
+          className="account__details__name"
+          noWrap={true}
+        >
+          {name}
         </Typography>
-      </div>
-    </Paper>
+        <div className="account__details">
+          <Typography component="p">{balance}</Typography>
+          <Typography component="p" className="account__details__type">
+            {isPartner ? 'partner' : 'account'}
+          </Typography>
+        </div>
+      </Paper>
+      {activeProgram !== index ? (
+        ''
+      ) : (
+        <ProgramRead
+          name={name}
+          className="account details-card"
+          handleClick={() => setActiveProgram(index)}
+        />
+      )}
+    </div>
   );
 
   const getProgramDetails = (id: string, balance: number) => {
@@ -99,15 +110,10 @@ export default (props: Props) => {
   const balances = [...accountBalances, ...partnerBalances];
   const cards = balances.map(buildCard);
   const info = (
-    <Paper className="account-info__card">
-      <Typography variant="h6" component="h6">
-        {balances[activeProgram] && balances[activeProgram].name}
-      </Typography>
-      <Typography component="p">
-        There's a lot to say about{' '}
-        {balances[activeProgram] && balances[activeProgram].name}!
-      </Typography>
-    </Paper>
+    <ProgramRead
+      name={balances[activeProgram] && balances[activeProgram].name}
+      className="account-info__card"
+    />
   );
 
   return (

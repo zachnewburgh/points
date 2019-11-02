@@ -152,7 +152,6 @@ export default () => {
               setBalances={setBalances}
               setBalancePoints={setBalancePoints}
             />
-            <ProgramRead programs={programs} />
           </>
         </Route>
         <Route path="/">

@@ -1,25 +1,28 @@
 import React from 'react';
-import { QuerySnapshot } from 'firebase/firebase-firestore';
 
 import './Read.scss';
+import { Paper, Typography } from '@material-ui/core';
 
 interface Props {
-  programs: Array<QuerySnapshot>;
+  name: string;
+  className: string;
+  handleClick?: () => void;
 }
 
 export default (props: Props) => {
-  const { programs } = props;
+  const { name, handleClick, className } = props;
 
   return (
-    <ul>
-      {programs.map(program => {
-        const { name, transferRatiosByPartner } = program.data();
-        return (
-          <li key={program.id}>
-            {name} | Transfers: {Object.keys(transferRatiosByPartner).length}
-          </li>
-        );
-      })}
-    </ul>
+    <Paper className={className} onClick={handleClick}>
+      <Typography
+        variant="h6"
+        component="h6"
+        className="account__details__name"
+        noWrap={true}
+      >
+        {name}
+      </Typography>
+      <Typography component="p">There's a lot to say about {name}!</Typography>
+    </Paper>
   );
 };
