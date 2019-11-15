@@ -12,7 +12,8 @@ import {
   Admin,
   Programs,
   Header,
-  Sidebar
+  Sidebar,
+  HomeContainer
 } from '@points/points';
 import './app.scss';
 import { Router, Switch, Route } from 'react-router-dom';
@@ -134,29 +135,8 @@ export default () => {
   const loggedIn = currentUser && (
     <Router history={history}>
       <Switch>
-        <Route path="/trips">Trips</Route>
-        <Route path="/blog">Blog</Route>
-        <Route path="/cards">Cards</Route>
-        <Route path="/account">Account</Route>
         <Route path="/admin">{isAdmin ? admin : 'Restricted'}</Route>
-        <Route path="/programs">
-          <>
-            <Programs
-              programs={programs}
-              balances={balances}
-              balance={balance}
-              balancePoints={balancePoints}
-              usersRef={usersRef}
-              user={user}
-              setBalance={setBalance}
-              setBalances={setBalances}
-              setBalancePoints={setBalancePoints}
-            />
-          </>
-        </Route>
-        <Route path="/">
-          <Home history={history} />
-        </Route>
+        <Route path="/" component={HomeContainer} />
       </Switch>
     </Router>
   );
@@ -170,7 +150,7 @@ export default () => {
       })}
     >
       <div className={classes.drawerHeader} />
-      <Grid className="grid__container" container>
+      <Grid className={classes.gridContainer} container>
         <Grid item xs={12}>
           {currentUser ? loggedIn : loggedOut}
         </Grid>

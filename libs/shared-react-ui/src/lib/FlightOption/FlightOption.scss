@@ -1,0 +1,31 @@
+.flight {
+  width: 100%;
+  padding: 24px;
+
+  &.MuiPaper-rounded {
+    border-radius: 0;
+  }
+
+  &:hover {
+    background-color: #dddddd;
+  }
+
+  &__content {
+    display: flex;
+
+    &__program {
+      flex: 1;
+      font-weight: bold;
+    }
+
+    &__itinerary {
+      flex: 1;
+      text-align: center;
+    }
+
+    &__points {
+      flex: 1;
+      text-align: end;
+    }
+  }
+}

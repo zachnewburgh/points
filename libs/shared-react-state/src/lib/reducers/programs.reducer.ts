@@ -2,8 +2,14 @@ import {
   ProgramActionType as ActionType,
   ProgramActionTypes as ActionTypes
 } from '../types';
+import { ProgramsState } from '../interfaces';
 
-export default (state = { ids: [], entities: {} }, action: ActionType) => {
+const programsInitialState = { ids: [], entities: {} };
+
+export default (
+  state: ProgramsState = programsInitialState,
+  action: ActionType
+) => {
   switch (action.type) {
     case ActionTypes.AddSuccess: {
       return {
