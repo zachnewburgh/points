@@ -8,8 +8,10 @@ import { RouteComponentProps } from 'react-router-dom';
 interface Props extends RouteComponentProps {
   arriving: string;
   departing: string;
+  program: string;
   setArriving: (airportName: string) => void;
   setDeparting: (airportName: string) => void;
+  setProgram: (program: string) => void;
 }
 
 interface Airport {
@@ -22,7 +24,14 @@ interface Program {
 }
 
 export default (props: Props) => {
-  const { departing, arriving, setArriving, setDeparting } = props;
+  const {
+    departing,
+    arriving,
+    setArriving,
+    setDeparting,
+    setProgram,
+    program
+  } = props;
 
   const programs = [
     { name: 'Aeroplan' },
@@ -33,11 +42,16 @@ export default (props: Props) => {
 
   const getAirportLabel = ({ name, code }: Airport) => `${name} (${code})`;
 
-  const handleDepartureChange = (_: ChangeEvent, { code }: Airport) =>
-    setDeparting(code);
+  const handleDepartureChange = (_: ChangeEvent, airport: Airport) =>
+    setDeparting(airport && airport.code);
 
-  const handleArrivalChange = (_: ChangeEvent, { code }: Airport) =>
-    setArriving(code);
+  const handleArrivalChange = (_: ChangeEvent, airport: Airport) =>
+    setArriving(airport && airport.code);
+
+  const handleRouteClick = (name: string) => {
+    const newProgram = name === program ? null : name;
+    setProgram(newProgram);
+  };
 
   const travelForm = (
     <div className="home__form__airports">
@@ -65,6 +79,8 @@ export default (props: Props) => {
         name={name}
         itinerary={`${departing}-${arriving}`}
         points={100 + index}
+        onClick={() => handleRouteClick(name)}
+        isSelected={name === program}
       />
     ));
 

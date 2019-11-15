@@ -1,6 +1,14 @@
 .flight {
   width: 100%;
   padding: 24px;
+  cursor: pointer;
+
+  &--selected {
+    width: 100%;
+    padding: 24px;
+    background-color: pink !important;
+    cursor: pointer;
+  }
 
   &.MuiPaper-rounded {
     border-radius: 0;

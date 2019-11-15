@@ -1,6 +1,7 @@
 export enum SearchActionTypes {
   SetDeparting = '[SEARCH] Set Departing Airport',
-  SetArriving = '[SEARCH] Set Arriving Airport'
+  SetArriving = '[SEARCH] Set Arriving Airport',
+  SetProgram = '[SEARCH] Set Program'
 }
 
 interface setDepartingAction {
@@ -13,4 +14,12 @@ interface setArrivingAction {
   payload: string;
 }
 
-export type SearchActionType = setDepartingAction | setArrivingAction;
+interface setProgramAction {
+  type: SearchActionTypes.SetProgram;
+  payload: string;
+}
+
+export type SearchActionType =
+  | setDepartingAction
+  | setArrivingAction
+  | setProgramAction;

@@ -11,5 +11,9 @@ export default {
   setDeparting: (airportName: string): ActionType => ({
     type: ActionTypes.SetDeparting,
     payload: airportName
+  }),
+  setProgram: (program: string): ActionType => ({
+    type: ActionTypes.SetProgram,
+    payload: program
   })
 };

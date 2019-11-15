@@ -4,7 +4,7 @@ import {
 } from '../types';
 import { SearchState } from '../interfaces';
 
-const searchInitialState = { arriving: null, departing: null };
+const searchInitialState = { arriving: null, departing: null, program: null };
 
 export default (
   search: SearchState = searchInitialState,
@@ -12,9 +12,11 @@ export default (
 ) => {
   switch (action.type) {
     case ActionTypes.SetArriving:
-      return { ...search, arriving: action.payload };
+      return { ...search, arriving: action.payload, program: null };
     case ActionTypes.SetDeparting:
-      return { ...search, departing: action.payload };
+      return { ...search, departing: action.payload, program: null };
+    case ActionTypes.SetProgram:
+      return { ...search, program: action.payload };
     default:
       return search;
   }
