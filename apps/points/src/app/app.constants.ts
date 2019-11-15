@@ -61,6 +61,9 @@ export const useStyles = makeStyles((theme: Theme) =>
         duration: theme.transitions.duration.enteringScreen
       }),
       marginLeft: 0
+    },
+    gridContainer: {
+      height: '100%'
     }
   })
 );

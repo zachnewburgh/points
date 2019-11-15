@@ -1,57 +1,98 @@
-import React from 'react';
-import {
-  Card,
-  CardActionArea,
-  CardMedia,
-  CardContent,
-  Typography,
-  CardActions,
-  Button
-} from '@material-ui/core';
-import { useStyles, cards } from './Home.constants';
+import React, { ChangeEvent } from 'react';
+import { Autocomplete } from '@points/shared-react-ui';
 import './Home.scss';
-import { History } from 'history';
+import { airports } from './Airports.constants';
+import { FlightOption } from '@points/shared-react-ui';
+import { RouteComponentProps } from 'react-router-dom';
 
-interface Props {
-  history: History;
+interface Props extends RouteComponentProps {
+  arriving: string;
+  departing: string;
+  program: string;
+  setArriving: (airportName: string) => void;
+  setDeparting: (airportName: string) => void;
+  setProgram: (program: string) => void;
+}
+
+interface Airport {
+  name: string;
+  code: string;
+}
+
+interface Program {
+  name: string;
 }
 
 export default (props: Props) => {
-  const classes = useStyles({});
-  const { history } = props;
+  const {
+    departing,
+    arriving,
+    setArriving,
+    setDeparting,
+    setProgram,
+    program
+  } = props;
+
+  const programs = [
+    { name: 'Aeroplan' },
+    { name: 'United' },
+    { name: 'Delta' },
+    { name: 'Southwest' }
+  ];
+
+  const getAirportLabel = ({ name, code }: Airport) => `${name} (${code})`;
+
+  const handleDepartureChange = (_: ChangeEvent, airport: Airport) =>
+    setDeparting(airport && airport.code);
+
+  const handleArrivalChange = (_: ChangeEvent, airport: Airport) =>
+    setArriving(airport && airport.code);
+
+  const handleRouteClick = (name: string) => {
+    const newProgram = name === program ? null : name;
+    setProgram(newProgram);
+  };
+
+  const travelForm = (
+    <div className="home__form__airports">
+      <Autocomplete
+        options={airports}
+        getOptionLabel={getAirportLabel}
+        onChange={handleDepartureChange}
+        label="From"
+      />
+      <Autocomplete
+        options={airports}
+        getOptionLabel={getAirportLabel}
+        onChange={handleArrivalChange}
+        label="To"
+      />
+    </div>
+  );
+
+  const flightOptions =
+    departing &&
+    arriving &&
+    programs.map(({ name }: Program, index: number) => (
+      <FlightOption
+        key={index}
+        name={name}
+        itinerary={`${departing}-${arriving}`}
+        points={100 + index}
+        onClick={() => handleRouteClick(name)}
+        isSelected={name === program}
+      />
+    ));
 
   return (
     <section className="home">
-      {cards.map((card, index) => (
-        <Card
-          className={classes.card}
-          key={index}
-          onClick={() => history.push(card.link)}
-        >
-          <CardActionArea>
-            <CardMedia
-              component="img"
-              alt={card.img.alt}
-              height="140"
-              image={card.img.url}
-              title={card.img.title}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                {card.title}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {card.body}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-          <CardActions>
-            <Button size="small" color="primary">
-              {card.action}
-            </Button>
-          </CardActions>
-        </Card>
-      ))}
+      <h1>Where would you like to go?</h1>
+      <form className="home__form">
+        <div className="home__form__container">{travelForm}</div>
+      </form>
+      <div className="home__results">
+        <div className="flight__options">{flightOptions}</div>
+      </div>
     </section>
   );
 };

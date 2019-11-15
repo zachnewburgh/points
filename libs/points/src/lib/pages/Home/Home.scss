@@ -1,6 +1,86 @@
 .home {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
   flex-wrap: wrap;
+  height: 100%;
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+
+    &__container {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      justify-content: center;
+    }
+
+    &__airports {
+      width: 65%;
+      display: flex;
+
+      .MuiAutocomplete-root {
+        &:first-child {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+
+  &__results {
+    display: flex;
+    width: 65%;
+
+    .flight__filters {
+      flex: 1;
+
+      .header {
+        box-shadow: none;
+        width: 100%;
+        background-color: transparent;
+        padding: 12px 24px;
+        border-left: 6px solid transparent;
+        border-bottom: 1px solid black;
+        border-radius: 0;
+
+        &__content {
+          display: flex;
+
+          &__program {
+            flex: 1;
+            font-weight: bold;
+          }
+          &__itinerary {
+            flex: 1;
+            font-weight: bold;
+            text-align: center;
+          }
+          &__points {
+            flex: 1;
+            font-weight: bold;
+            text-align: end;
+          }
+        }
+      }
+    }
+
+    .flight__options {
+      flex: 3;
+      margin-top: 12px;
+
+      .flight {
+        &:first-child {
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+        }
+        &:last-child {
+          border-bottom-left-radius: 10px;
+          border-bottom-right-radius: 10px;
+        }
+      }
+    }
+  }
 }

@@ -2,8 +2,11 @@ import {
   UserActionType as ActionType,
   UserActionTypes as ActionTypes
 } from '../types';
+import { User } from '@points/shared-models';
 
-export default (user = null, action: ActionType) => {
+const userInitialState = null;
+
+export default (user: User = userInitialState, action: ActionType) => {
   switch (action.type) {
     case ActionTypes.LoginSuccess:
       return { user, ...action.payload };

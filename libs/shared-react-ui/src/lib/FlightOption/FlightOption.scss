@@ -1,0 +1,39 @@
+.flight {
+  width: 100%;
+  padding: 24px;
+  cursor: pointer;
+
+  &--selected {
+    width: 100%;
+    padding: 24px;
+    background-color: pink !important;
+    cursor: pointer;
+  }
+
+  &.MuiPaper-rounded {
+    border-radius: 0;
+  }
+
+  &:hover {
+    background-color: #dddddd;
+  }
+
+  &__content {
+    display: flex;
+
+    &__program {
+      flex: 1;
+      font-weight: bold;
+    }
+
+    &__itinerary {
+      flex: 1;
+      text-align: center;
+    }
+
+    &__points {
+      flex: 1;
+      text-align: end;
+    }
+  }
+}
