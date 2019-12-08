@@ -2,80 +2,54 @@ import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { useTheme } from '@material-ui/core/styles';
 import { CssBaseline, Grid } from '@material-ui/core';
-import { useStyles } from './app.constants';
-import * as firebaseUtils from '@points/firebase';
+import { useStyles } from './App.constants';
 import {
-  ProgramRead,
-  getBalances,
-  getPrograms,
   Home,
   Admin,
-  Programs,
   Header,
   Sidebar,
-  HomeContainer
+  HomeContainer,
+  AdminContainer,
+  ProgramsContainer
 } from '@points/points';
 import './app.scss';
 import { Router, Switch, Route } from 'react-router-dom';
+import { User } from '@points/shared-models';
 import history from '../history';
 
-firebaseUtils.init();
+interface Props {
+  user: User;
+  isReady: boolean;
+  initializeFirebase: () => void;
+  login: () => void;
+  logout: () => void;
+  getPrograms: () => void;
+}
 
-export default () => {
+export default (props: Props) => {
+  const {
+    initializeFirebase,
+    isReady,
+    login,
+    logout,
+    user,
+    getPrograms
+  } = props;
+
+  useEffect(() => {
+    if (isReady) getPrograms();
+  }, [isReady]);
+
+  useEffect(() => {
+    initializeFirebase();
+  }, [initializeFirebase]);
+
   const classes = useStyles({});
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [user, setUser] = useState(null);
-  const [program, setProgram] = useState('');
-  const [programs, setPrograms] = useState([]);
-  const [from, setFrom] = useState('');
-  const [to, setTo] = useState('');
-  const [fromRatio, setFromRatio] = useState(1.0);
-  const [toRatio, setToRatio] = useState(1.0);
-  const [programToDelete, setProgramToDelete] = useState('');
-  const [programToEdit, setProgramToEdit] = useState('');
-  const [newName, setNewName] = useState('');
-  const [balance, setBalance] = useState('');
-  const [balancePoints, setBalancePoints] = useState(0);
-  const [balances, setBalances] = useState({});
-
-  const db = firebaseUtils.initFirestore();
-  const programsRef = db.collection('programs');
-  const usersRef = db.collection('users');
-
-  useEffect(() => {
-    firebaseUtils.authChanged(setCurrentUser);
-  }, []);
-
-  const getUser = async () => {
-    const userToSet = await usersRef.doc(currentUser.uid).get();
-    setUser(userToSet);
-  };
-
-  useEffect(() => {
-    if (currentUser) {
-      getUser();
-    }
-  }, [currentUser]);
-
-  const getAdmin = async () => {
-    setIsAdmin(!!user && user.data().role === 'admin');
-  };
-
-  useEffect(() => {
-    if (user) {
-      getAdmin();
-      getPrograms(programsRef, setPrograms);
-      getBalances(user, setBalances);
-    }
-  }, [user]);
 
   const handleLogin = () => {
-    currentUser
-      ? firebaseUtils.logout(setCurrentUser)
-      : firebaseUtils.login(setCurrentUser);
+    user ? logout() : login();
   };
 
   const handleDrawerOpen = () => {
@@ -91,7 +65,7 @@ export default () => {
       classes={classes}
       handleDrawerOpen={handleDrawerOpen}
       handleLogin={handleLogin}
-      currentUser={currentUser}
+      user={user}
       open={open}
       history={history}
     />
@@ -107,35 +81,13 @@ export default () => {
     />
   );
 
-  const admin = (
-    <Admin
-      programs={programs}
-      program={program}
-      programsRef={programsRef}
-      getPrograms={getPrograms}
-      setPrograms={setPrograms}
-      setProgram={setProgram}
-      from={from}
-      to={to}
-      fromRatio={fromRatio}
-      toRatio={toRatio}
-      programToEdit={programToEdit}
-      setFrom={setFrom}
-      setTo={setTo}
-      setFromRatio={setFromRatio}
-      setToRatio={setToRatio}
-      setNewName={setNewName}
-      newName={newName}
-      setProgramToEdit={setProgramToEdit}
-      setProgramToDelete={setProgramToDelete}
-      programToDelete={programToDelete}
-    />
-  );
+  const admin = <AdminContainer />;
 
-  const loggedIn = currentUser && (
+  const loggedIn = user && (
     <Router history={history}>
       <Switch>
-        <Route path="/admin">{isAdmin ? admin : 'Restricted'}</Route>
+        <Route path="/admin">{user.isAdmin ? admin : 'Restricted'}</Route>
+        <Route path="/programs" component={ProgramsContainer} />
         <Route path="/" component={HomeContainer} />
       </Switch>
     </Router>
@@ -152,7 +104,7 @@ export default () => {
       <div className={classes.drawerHeader} />
       <Grid className={classes.gridContainer} container>
         <Grid item xs={12}>
-          {currentUser ? loggedIn : loggedOut}
+          {user ? loggedIn : loggedOut}
         </Grid>
       </Grid>
     </main>

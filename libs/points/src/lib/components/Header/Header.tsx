@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import { Menu as MenuIcon } from '@material-ui/icons';
 import clsx from 'clsx';
-import { CurrentUser } from '@points/shared-models';
+import { User } from '@points/shared-models';
 import { History } from 'history';
 
 interface Props {
@@ -19,24 +19,17 @@ interface Props {
   handleDrawerOpen: () => void;
   open: boolean;
   handleLogin: () => void;
-  currentUser: CurrentUser;
+  user: User;
   history: History;
 }
 
 export default (props: Props) => {
-  const {
-    classes,
-    handleDrawerOpen,
-    open,
-    handleLogin,
-    currentUser,
-    history
-  } = props;
+  const { classes, handleDrawerOpen, open, handleLogin, user, history } = props;
 
-  const authButton = currentUser ? (
+  const authButton = user ? (
     <Tooltip title="Log Out">
       <ButtonBase onClick={handleLogin}>
-        <Avatar alt="user profile" src={currentUser.photoURL} />
+        <Avatar alt="user profile" src={user.photoURL} />
       </ButtonBase>
     </Tooltip>
   ) : (

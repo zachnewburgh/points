@@ -1,65 +1,46 @@
-import React, { ChangeEvent, FormEvent } from 'react';
-import {
-  DocumentReference,
-  CollectionReference
-} from 'firebase/firebase-firestore';
-
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import './Update.scss';
-import { getBalances } from '../User.utils';
-import { UserBalances, Program } from '@points/shared-models';
+import { Program, User } from '@points/shared-models';
 import { PrimaryButton, TextInput, Select } from '@points/shared-react-ui';
 
 interface Props {
-  balance: string;
-  balancePoints: number;
-  programs: Array<Program>;
-  user: DocumentReference;
-  usersRef: CollectionReference;
-  setBalance: (id: string) => void;
-  setBalancePoints: (points: number) => void;
-  setBalances: (balances: UserBalances) => void;
+  programs: Program[];
+  user: User;
+  updateUser: (ID: string, update: Partial<User>) => void;
 }
 
 export default (props: Props) => {
-  const {
-    programs,
-    balance,
-    balancePoints,
-    user,
-    usersRef,
-    setBalance,
-    setBalances,
-    setBalancePoints
-  } = props;
+  const { programs, user, updateUser } = props;
+  const [programID, setProgramID] = useState();
+  const [balance, setBalance] = useState();
 
-  const handlebalanceUpdate = async (event: FormEvent) => {
+  const handleupdateUser = async (event: FormEvent) => {
     event.preventDefault();
-    const userRef = usersRef.doc(user.id);
-    userRef.set({ balances: { [balance]: balancePoints } }, { merge: true });
-    const updatedUser = await userRef.get();
-    getBalances(updatedUser, setBalances);
+    const newBalances = { ...user.balances, [programID]: balance };
+    if (balance === 0) delete newBalances[programID];
+    updateUser(user.id, { balances: newBalances });
   };
 
-  const handleBalanceChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setBalance(event.target.value);
+  const handleProgramChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setProgramID(event.target.value);
   };
 
-  const handlebalancePointsChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setBalancePoints(+event.target.value);
+  const handleBalanceChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setBalance(+event.target.value);
   };
 
-  const programOptions = programs.map(ref => {
-    const { name } = ref.data();
-    return { value: ref.id, label: name };
-  });
+  const programOptions = programs.map(({ id: value, name: label }) => ({
+    value,
+    label
+  }));
 
   const selectProgram = (
     <Select
       id="edit-program-from"
       label="From"
       helperText="From"
-      handleOnChange={handleBalanceChange}
-      value={balance}
+      handleOnChange={handleProgramChange}
+      value={programID}
       options={programOptions}
     />
   );
@@ -69,13 +50,13 @@ export default (props: Props) => {
       id="program-balance"
       label="Program Balance"
       helperText="Program Balance"
-      value={balancePoints}
-      handleOnChange={handlebalancePointsChange}
+      value={balance}
+      handleOnChange={handleBalanceChange}
     />
   );
 
   return (
-    <form onSubmit={handlebalanceUpdate}>
+    <form onSubmit={handleupdateUser}>
       <h3>Add a Point Balance</h3>
       {selectProgram}
       {selectBalance}

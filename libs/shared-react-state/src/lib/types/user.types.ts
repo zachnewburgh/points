@@ -18,78 +18,78 @@ export enum UserActionTypes {
   DeleteFailure = '[USER] Delete Failure'
 }
 
-interface loginAction {
+interface LoginAction {
   type: UserActionTypes.Login;
 }
-interface loginSuccessAction {
+interface LoginSuccessAction {
   type: UserActionTypes.LoginSuccess;
   payload: User;
 }
-interface loginFailureAction {
+interface LoginFailureAction {
   type: UserActionTypes.LoginFailure;
   payload: Error;
 }
-interface logoutAction {
+interface LogoutAction {
   type: UserActionTypes.Logout;
 }
-interface logoutSuccessAction {
+interface LogoutSuccessAction {
   type: UserActionTypes.LogoutSuccess;
-  payload: User;
 }
-interface logoutFailureAction {
+interface LogoutFailureAction {
   type: UserActionTypes.LogoutFailure;
   payload: Error;
 }
-interface addUserAction {
+interface AddUserAction {
   type: UserActionTypes.Add;
   payload: User;
 }
-interface addUserSuccessAction {
+interface AddUserSuccessAction {
   type: UserActionTypes.AddSuccess;
   payload: string;
 }
-interface addUserFailureAction {
+interface AddUserFailureAction {
   type: UserActionTypes.AddFailure;
   payload: { user: User; error: Error };
 }
-interface updateUserAction {
+interface UpdateUserAction {
   type: UserActionTypes.Update;
-  payload: Partial<User>;
+  ID: string;
+  update: Partial<User>;
 }
-interface updateUserSuccessAction {
+interface UpdateUserSuccessAction {
   type: UserActionTypes.UpdateSuccess;
-  payload: string;
+  payload: User;
 }
-interface updateUserFailureAction {
+interface UpdateUserFailureAction {
   type: UserActionTypes.UpdateFailure;
-  payload: { userPartial; error: Error };
+  payload: Error;
 }
-interface deleteUserAction {
+interface DeleteUserAction {
   type: UserActionTypes.Delete;
   payload: string;
 }
-interface deleteUserSuccessAction {
+interface DeleteUserSuccessAction {
   type: UserActionTypes.DeleteSuccess;
   payload: string;
 }
-interface deleteUserFailureAction {
+interface DeleteUserFailureAction {
   type: UserActionTypes.DeleteFailure;
   payload: { userId: string; error: Error };
 }
 
 export type UserActionType =
-  | loginAction
-  | loginSuccessAction
-  | loginFailureAction
-  | logoutAction
-  | logoutSuccessAction
-  | logoutFailureAction
-  | addUserAction
-  | addUserSuccessAction
-  | addUserFailureAction
-  | updateUserAction
-  | updateUserSuccessAction
-  | updateUserFailureAction
-  | deleteUserAction
-  | deleteUserSuccessAction
-  | deleteUserFailureAction;
+  | LoginAction
+  | LoginSuccessAction
+  | LoginFailureAction
+  | LogoutAction
+  | LogoutSuccessAction
+  | LogoutFailureAction
+  | AddUserAction
+  | AddUserSuccessAction
+  | AddUserFailureAction
+  | UpdateUserAction
+  | UpdateUserSuccessAction
+  | UpdateUserFailureAction
+  | DeleteUserAction
+  | DeleteUserSuccessAction
+  | DeleteUserFailureAction;

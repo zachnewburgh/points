@@ -5,4 +5,5 @@ export interface AppState {
   programs: ProgramsState;
   search: SearchState;
   user: User;
+  firebase: { isReady: boolean };
 }

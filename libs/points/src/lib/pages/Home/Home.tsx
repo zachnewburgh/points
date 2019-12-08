@@ -9,9 +9,12 @@ interface Props extends RouteComponentProps {
   arriving: string;
   departing: string;
   program: string;
+  programs: { ids: string[]; entities: Program[] };
+  user: any;
   setArriving: (airportName: string) => void;
   setDeparting: (airportName: string) => void;
   setProgram: (program: string) => void;
+  login: () => void;
 }
 
 interface Airport {
@@ -30,7 +33,9 @@ export default (props: Props) => {
     setArriving,
     setDeparting,
     setProgram,
-    program
+    program,
+    programs: realPrograms,
+    user
   } = props;
 
   const programs = [
@@ -84,8 +89,41 @@ export default (props: Props) => {
       />
     ));
 
+  const points = realPrograms.ids.map(id => ({
+    name: realPrograms.entities[id].name,
+    children: Object.keys(user.balances).map(key => {
+      const ratio = realPrograms.entities[key].transferRatiosByPartner[id] || 0;
+      const numPoints = user.balances[key];
+      return ratio * numPoints;
+    })
+  }));
+
+  const tableHeaders = Object.keys(user.balances).map((key, index) => {
+    const program = realPrograms.entities[key];
+    return program && <th key={index}>{program.name}</th>;
+  });
+
+  const tableBody = points.map((point, index) => (
+    <tr key={index}>
+      <td>{point.name}</td>
+      {point.children.map((child, idx) => (
+        <td key={idx}>{child}</td>
+      ))}
+    </tr>
+  ));
+
   return (
     <section className="home">
+      <table>
+        <thead>
+          <tr>
+            <th />
+            {tableHeaders}
+          </tr>
+        </thead>
+        <tbody>{tableBody}</tbody>
+      </table>
+
       <h1>Where would you like to go?</h1>
       <form className="home__form">
         <div className="home__form__container">{travelForm}</div>

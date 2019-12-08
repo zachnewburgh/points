@@ -5,9 +5,9 @@ export default {
   getAll: () => ({
     type: ActionTypes.GetAll
   }),
-  getAllSuccess: (program: Array<Program>) => ({
+  getAllSuccess: (programs: Program[]) => ({
     type: ActionTypes.GetAllSuccess,
-    payload: program
+    payload: programs
   }),
   getAllFailure: (error: Error) => ({
     type: ActionTypes.GetAllFailure,
@@ -25,25 +25,26 @@ export default {
     type: ActionTypes.GetByIdFailure,
     payload: error
   }),
-  addProgram: (program: Program) => ({
+  addProgram: (name: string) => ({
     type: ActionTypes.Add,
-    payload: program
+    payload: name
   }),
-  addProgramSuccess: (program: Program) => ({
+  addProgramSuccess: (programs: Program[]) => ({
     type: ActionTypes.AddSuccess,
-    payload: program
+    payload: programs
   }),
   addProgramFailure: (error: Error) => ({
     type: ActionTypes.AddFailure,
     payload: error
   }),
-  updateProgram: (programPartial: Partial<Program>) => ({
+  updateProgram: (ID: string, update: Partial<Program>) => ({
     type: ActionTypes.Update,
-    payload: programPartial
+    ID,
+    update
   }),
-  updateProgramSuccess: (program: Program) => ({
+  updateProgramSuccess: (programs: Program[]) => ({
     type: ActionTypes.UpdateSuccess,
-    payload: program
+    payload: programs
   }),
   updateProgramFailure: (error: Error) => ({
     type: ActionTypes.UpdateFailure,
@@ -53,9 +54,9 @@ export default {
     type: ActionTypes.Delete,
     payload: id
   }),
-  deleteProgramSuccess: (id: string) => ({
+  deleteProgramSuccess: (programs: Program[]) => ({
     type: ActionTypes.DeleteSuccess,
-    payload: id
+    payload: programs
   }),
   deleteProgramFailure: (error: Error) => ({
     type: ActionTypes.DeleteFailure,

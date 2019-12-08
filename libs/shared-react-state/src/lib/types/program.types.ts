@@ -18,79 +18,80 @@ export enum ProgramActionTypes {
   DeleteFailure = '[PROGRAM] Delete Failure'
 }
 
-interface getAll {
+interface GetAll {
   type: ProgramActionTypes.GetAll;
 }
-interface getAllSuccess {
+interface GetAllSuccess {
   type: ProgramActionTypes.GetAllSuccess;
-  payload: Array<Program>;
+  payload: Program[];
 }
-interface getAllFailure {
+interface GetAllFailure {
   type: ProgramActionTypes.GetAllFailure;
   payload: Error;
 }
-interface getById {
+interface GetById {
   type: ProgramActionTypes.GetById;
   payload: string;
 }
-interface getByIdSuccess {
+interface GetByIdSuccess {
   type: ProgramActionTypes.GetByIdSuccess;
   payload: Program;
 }
-interface getByIdFailure {
+interface GetByIdFailure {
   type: ProgramActionTypes.GetByIdFailure;
   payload: Error;
 }
-interface addProgram {
+interface AddProgram {
   type: ProgramActionTypes.Add;
-  payload: Program;
+  payload: string;
 }
-interface addProgramSuccess {
+interface AddProgramSuccess {
   type: ProgramActionTypes.AddSuccess;
-  payload: Program;
+  payload: Program[];
 }
-interface addProgramFailure {
+interface AddProgramFailure {
   type: ProgramActionTypes.AddFailure;
   payload: Error;
 }
-interface updateProgram {
+interface UpdateProgram {
   type: ProgramActionTypes.Update;
-  payload: Partial<Program>;
+  ID: string;
+  update: Partial<Program>;
 }
-interface updateProgramSuccess {
+interface UpdateProgramSuccess {
   type: ProgramActionTypes.UpdateSuccess;
-  payload: Program;
+  payload: Program[];
 }
-interface updateProgramFailure {
+interface UpdateProgramFailure {
   type: ProgramActionTypes.UpdateFailure;
   payload: Error;
 }
-interface deleteProgram {
+interface DeleteProgram {
   type: ProgramActionTypes.Delete;
   payload: string;
 }
-interface deleteProgramSuccess {
+interface DeleteProgramSuccess {
   type: ProgramActionTypes.DeleteSuccess;
-  payload: string;
+  payload: Program[];
 }
-interface deleteProgramFailure {
+interface DeleteProgramFailure {
   type: ProgramActionTypes.DeleteFailure;
   payload: Error;
 }
 
 export type ProgramActionType =
-  | getAll
-  | getAllSuccess
-  | getAllFailure
-  | getById
-  | getByIdSuccess
-  | getByIdFailure
-  | addProgram
-  | addProgramSuccess
-  | addProgramFailure
-  | updateProgram
-  | updateProgramSuccess
-  | updateProgramFailure
-  | deleteProgram
-  | deleteProgramSuccess
-  | deleteProgramFailure;
+  | GetAll
+  | GetAllSuccess
+  | GetAllFailure
+  | GetById
+  | GetByIdSuccess
+  | GetByIdFailure
+  | AddProgram
+  | AddProgramSuccess
+  | AddProgramFailure
+  | UpdateProgram
+  | UpdateProgramSuccess
+  | UpdateProgramFailure
+  | DeleteProgram
+  | DeleteProgramSuccess
+  | DeleteProgramFailure;
