@@ -9,7 +9,8 @@ const userInitialState = null;
 export default (user: User = userInitialState, action: ActionType) => {
   switch (action.type) {
     case ActionTypes.LoginSuccess:
-      return { user, ...action.payload };
+    case ActionTypes.UpdateSuccess:
+      return { ...user, ...action.payload };
     case ActionTypes.LoginFailure:
     case ActionTypes.LogoutSuccess:
     case ActionTypes.DeleteSuccess:

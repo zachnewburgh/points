@@ -2,14 +2,11 @@ export interface UserBalances {
   [id: string]: number;
 }
 
-export interface CurrentUser {
+export interface User {
+  id: string;
   displayName: string;
   photoURL: string;
-  uid: string;
-}
-
-export interface User {
-  [id: string]: {
-    balances: UserBalances;
-  };
+  email: string;
+  isAdmin: boolean;
+  balances: UserBalances;
 }

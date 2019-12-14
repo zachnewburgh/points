@@ -5,12 +5,12 @@ import 'typeface-roboto';
 import { Provider } from 'react-redux';
 import store from './store';
 
-import App from './app/app';
+import { AppContainer } from './App';
 
 const rootElement = document.getElementById('root');
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <AppContainer />
   </Provider>,
   rootElement
 );

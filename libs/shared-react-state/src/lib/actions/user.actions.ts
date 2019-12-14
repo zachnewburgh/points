@@ -15,10 +15,7 @@ export default {
     payload: error
   }),
   logout: (): ActionType => ({ type: ActionTypes.Logout }),
-  logoutSuccess: (user: User): ActionType => ({
-    type: ActionTypes.LogoutSuccess,
-    payload: user
-  }),
+  logoutSuccess: (): ActionType => ({ type: ActionTypes.LogoutSuccess }),
   logoutFailure: (error: Error): ActionType => ({
     type: ActionTypes.LogoutFailure,
     payload: error
@@ -35,20 +32,18 @@ export default {
     type: ActionTypes.AddFailure,
     payload: { user, error }
   }),
-  updateUser: (userPartial: Partial<User>): ActionType => ({
+  updateUser: (ID: string, update: Partial<User>): ActionType => ({
     type: ActionTypes.Update,
-    payload: userPartial
+    ID,
+    update
   }),
-  updateUserSuccess: (userId: string): ActionType => ({
+  updateUserSuccess: (user: User): ActionType => ({
     type: ActionTypes.UpdateSuccess,
-    payload: userId
+    payload: user
   }),
-  updateUserFailure: (
-    userPartial: Partial<User>,
-    error: Error
-  ): ActionType => ({
+  updateUserFailure: (error: Error): ActionType => ({
     type: ActionTypes.UpdateFailure,
-    payload: { userPartial, error }
+    payload: error
   }),
   deleteUser: (userId: string): ActionType => ({
     type: ActionTypes.Delete,

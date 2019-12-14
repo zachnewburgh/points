@@ -11,24 +11,16 @@ export default (
   action: ActionType
 ) => {
   switch (action.type) {
-    case ActionTypes.AddSuccess: {
-      return {
-        ids: [...state.ids, action.payload.id],
-        entities: { ...state.entities, [action.payload.id]: action.payload }
-      };
-    }
-    case ActionTypes.UpdateSuccess: {
-      return {
-        ids: [...state.ids],
-        entities: { ...state.entities, [action.payload.id]: action.payload }
-      };
-    }
+    case ActionTypes.GetAllSuccess:
+    case ActionTypes.AddSuccess:
+    case ActionTypes.UpdateSuccess:
     case ActionTypes.DeleteSuccess: {
-      const newEntities = { ...state.entities };
-      delete newEntities[action.payload];
       return {
-        ids: state.ids.filter(id => id !== action.payload),
-        entities: newEntities
+        ids: action.payload.map(program => program.id),
+        entities: action.payload.reduce(
+          (map, program) => ({ ...map, [program.id]: program }),
+          {}
+        )
       };
     }
     default:

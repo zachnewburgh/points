@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import './Read.scss';
 import { UserBalances, Program } from '@points/shared-models';
 import { Paper, Typography } from '@material-ui/core';
@@ -7,7 +6,7 @@ import { ProgramRead } from '../../Program';
 
 interface Props {
   balances: UserBalances;
-  programs: Array<Program>;
+  programs: Program[];
 }
 
 interface ProgramsMap {
@@ -30,7 +29,7 @@ export default (props: Props) => {
 
   const addPartnerPoints = (map: PartnersMap, id: string) => {
     const program = programsById[id];
-    const ratios = program ? program.data().transferRatiosByPartner : {};
+    const ratios = program ? program.transferRatiosByPartner : {};
     Object.keys(ratios).forEach((partnerId: string) => {
       const points = Math.floor(ratios[partnerId] * accounts[id]);
       map[partnerId] = map[partnerId] === undefined ? 0 : map[partnerId];
@@ -91,7 +90,7 @@ export default (props: Props) => {
 
   const getProgramDetails = (id: string, balance: number) => {
     const program = programsById[id];
-    const programName = program && program.data().name;
+    const programName = program && program.name;
     return {
       name: programName,
       balance: balance,

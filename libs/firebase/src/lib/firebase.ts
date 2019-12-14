@@ -5,36 +5,30 @@ import { config } from './secrets';
 export const init = () => initializeApp(config);
 export const initFirestore = () => firestore();
 
-export const authChanged = (setCurrentUser: (user: User) => void) => {
-  auth().onAuthStateChanged(user => {
-    setCurrentUser(user);
-  });
-};
-
-interface User {
-  displayName: string;
-  email: string;
-  photoURL: string;
-}
-
-export const login = async (setCurrentUser: (user: User) => void) => {
+export const login = async () => {
   const provider = new auth.GoogleAuthProvider();
   try {
     await auth().setPersistence(auth.Auth.Persistence.LOCAL);
     const result = await auth().signInWithPopup(provider);
-    const { displayName, email, photoURL } = result.user;
-    const user = { displayName, email, photoURL };
-    setCurrentUser(user);
+    const { displayName, email, photoURL, uid: id } = result.user;
+    const db = initFirestore();
+    const user = await db
+      .collection('users')
+      .doc(id)
+      .get();
+    const { balances, role } = user.data();
+    const isAdmin = role === 'admin';
+    return { id, displayName, email, photoURL, isAdmin, balances };
   } catch (error) {
-    console.log(error);
+    throw new Error(error);
   }
 };
 
-export const logout = async (setCurrentUser: (user: User) => void) => {
+export const logout = async () => {
   try {
     await auth().signOut();
-    setCurrentUser(null);
+    return null;
   } catch (error) {
-    console.log(error);
+    throw new Error(error);
   }
 };

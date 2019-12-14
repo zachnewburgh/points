@@ -7,7 +7,9 @@ import { searchActions } from '@points/shared-react-state';
 const mapStateToProps = (state: AppState) => ({
   arriving: state.search.arriving,
   departing: state.search.departing,
-  program: state.search.program
+  program: state.search.program,
+  programs: state.programs,
+  user: state.user
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
