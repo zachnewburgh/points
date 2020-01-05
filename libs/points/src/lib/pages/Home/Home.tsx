@@ -4,13 +4,14 @@ import './Home.scss';
 import { airports } from './Airports.constants';
 import { FlightOption } from '@points/shared-react-ui';
 import { RouteComponentProps } from 'react-router-dom';
+import { User } from '@points/shared-models';
 
 interface Props extends RouteComponentProps {
   arriving: string;
   departing: string;
   program: string;
   programs: { ids: string[]; entities: Program[] };
-  user: any;
+  user: User;
   setArriving: (airportName: string) => void;
   setDeparting: (airportName: string) => void;
   setProgram: (program: string) => void;
@@ -98,22 +99,49 @@ export default (props: Props) => {
     })
   }));
 
-  const tableHeaders = Object.keys(user.balances).map((key, index) => {
-    const program = realPrograms.entities[key];
-    return program && <th key={index}>{program.name}</th>;
-  });
+  let table;
+  if (realPrograms.ids.length) {
+    const rows = Object.keys(user.balances).reduce((map, id) => {
+      const transferPartnersMap =
+        realPrograms.entities[id].transferRatiosByPartner;
+      const partnerIDs = Object.keys(transferPartnersMap);
+      partnerIDs.forEach(ID => {
+        const transferPoints = Math.floor(
+          transferPartnersMap[ID] * user.balances[id]
+        );
+        if (map[ID]) {
+          const { current = 0, transfer: existingTransfer = 0 } = map[ID];
+          const transfer = existingTransfer + transferPoints;
+          const total = current + transfer;
+          map[ID] = { current, transfer, total };
+        } else {
+          const current = 0;
+          const transfer = transferPoints;
+          const total = transferPoints;
+          map[ID] = { current, transfer, total };
+        }
+      });
+      const current = user.balances[id];
+      const transfer = map[id] ? map[id].transfer : 0;
+      const total = current + transfer;
+      return { ...map, [id]: { current, transfer, total } };
+    }, {});
+    console.log(rows);
 
-  const tableBody = points.map((point, index) => (
-    <tr key={index}>
-      <td>{point.name}</td>
-      {point.children.map((child, idx) => (
-        <td key={idx}>{child}</td>
-      ))}
-    </tr>
-  ));
+    const tableHeaders = ['Current', 'Transfers', 'Total'].map(
+      (header, index) => <th key={index}>{header}</th>
+    );
 
-  return (
-    <section className="home">
+    const tableBody = Object.keys(rows).map((key, index) => (
+      <tr key={index}>
+        <td>{realPrograms.entities[key].name}</td>
+        {Object.keys(rows[key]).map((rowKey, idx) => (
+          <td key={idx}>{rows[key][rowKey]}</td>
+        ))}
+      </tr>
+    ));
+
+    table = (
       <table>
         <thead>
           <tr>
@@ -123,7 +151,12 @@ export default (props: Props) => {
         </thead>
         <tbody>{tableBody}</tbody>
       </table>
+    );
+  }
 
+  return (
+    <section className="home">
+      {table}
       <h1>Where would you like to go?</h1>
       <form className="home__form">
         <div className="home__form__container">{travelForm}</div>
