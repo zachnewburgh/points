@@ -3,6 +3,7 @@ import { UserActionTypes } from '../types/user.types';
 import * as firebaseUtils from '@points/firebase';
 import { userActions } from '../actions';
 import { AnyAction } from 'redux';
+import { FirebaseCollection } from '@points/firebase';
 
 export function* login() {
   try {
@@ -24,7 +25,7 @@ export function* logout() {
 export function* updateUser({ ID, update }: AnyAction) {
   try {
     const db = firebaseUtils.initFirestore();
-    const usersRef = yield db.collection('users');
+    const usersRef = yield db.collection(FirebaseCollection.Users);
     const userRef = usersRef.doc(ID);
     userRef.update(update);
     const user = yield userRef.get();
