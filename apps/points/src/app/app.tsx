@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import clsx from 'clsx';
-import { useTheme } from '@material-ui/core/styles';
 import { CssBaseline, Grid } from '@material-ui/core';
-import { useStyles } from './App.constants';
+import { useTheme } from '@material-ui/core/styles';
 import {
-  Home,
-  Admin,
-  Header,
-  Sidebar,
-  HomeContainer,
   AdminContainer,
-  ProgramsContainer
+  Header,
+  HomeContainer,
+  ProgramsContainer,
+  Sidebar
 } from '@points/points';
-import './app.scss';
-import { Router, Switch, Route } from 'react-router-dom';
 import { User } from '@points/shared-models';
+import clsx from 'clsx';
+import React, { useEffect, useState } from 'react';
+import { Route, Router, Switch } from 'react-router-dom';
 import history from '../history';
+import { useStyles } from './App.constants';
+import './app.scss';
 
 interface Props {
   user: User;
@@ -37,7 +35,10 @@ export default (props: Props) => {
   } = props;
 
   useEffect(() => {
-    if (isReady) getPrograms();
+    if (isReady) {
+      handleLogin();
+      getPrograms();
+    }
   }, [isReady]);
 
   useEffect(() => {

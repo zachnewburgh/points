@@ -1,16 +1,19 @@
+import { Program, User } from '@points/shared-models';
+import { ProgramEntities } from '@points/shared-react-state';
+import { Autocomplete, FlightOption } from '@points/shared-react-ui';
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import React, { ChangeEvent } from 'react';
-import { Autocomplete } from '@points/shared-react-ui';
-import './Home.scss';
-import { airports } from './Airports.constants';
-import { FlightOption } from '@points/shared-react-ui';
 import { RouteComponentProps } from 'react-router-dom';
-import { User } from '@points/shared-models';
+import { BalancesTable } from '../../components/BalancesTable';
+import { airports } from './Airports.constants';
+import './Home.scss';
 
 interface Props extends RouteComponentProps {
   arriving: string;
   departing: string;
   program: string;
-  programs: { ids: string[]; entities: Program[] };
+  programs: { ids: string[]; entities: ProgramEntities };
   user: User;
   setArriving: (airportName: string) => void;
   setDeparting: (airportName: string) => void;
@@ -21,10 +24,6 @@ interface Props extends RouteComponentProps {
 interface Airport {
   name: string;
   code: string;
-}
-
-interface Program {
-  name: string;
 }
 
 export default (props: Props) => {
@@ -90,67 +89,13 @@ export default (props: Props) => {
       />
     ));
 
-  const points = realPrograms.ids.map(id => ({
-    name: realPrograms.entities[id].name,
-    children: Object.keys(user.balances).map(key => {
-      const ratio = realPrograms.entities[key].transferRatiosByPartner[id] || 0;
-      const numPoints = user.balances[key];
-      return ratio * numPoints;
-    })
-  }));
-
-  let table;
+  let table: JSX.Element;
   if (realPrograms.ids.length) {
-    const rows = Object.keys(user.balances).reduce((map, id) => {
-      const transferPartnersMap =
-        realPrograms.entities[id].transferRatiosByPartner;
-      const partnerIDs = Object.keys(transferPartnersMap);
-      partnerIDs.forEach(ID => {
-        const transferPoints = Math.floor(
-          transferPartnersMap[ID] * user.balances[id]
-        );
-        if (map[ID]) {
-          const { current = 0, transfer: existingTransfer = 0 } = map[ID];
-          const transfer = existingTransfer + transferPoints;
-          const total = current + transfer;
-          map[ID] = { current, transfer, total };
-        } else {
-          const current = 0;
-          const transfer = transferPoints;
-          const total = transferPoints;
-          map[ID] = { current, transfer, total };
-        }
-      });
-      const current = user.balances[id];
-      const transfer = map[id] ? map[id].transfer : 0;
-      const total = current + transfer;
-      return { ...map, [id]: { current, transfer, total } };
-    }, {});
-    console.log(rows);
-
-    const tableHeaders = ['Current', 'Transfers', 'Total'].map(
-      (header, index) => <th key={index}>{header}</th>
-    );
-
-    const tableBody = Object.keys(rows).map((key, index) => (
-      <tr key={index}>
-        <td>{realPrograms.entities[key].name}</td>
-        {Object.keys(rows[key]).map((rowKey, idx) => (
-          <td key={idx}>{rows[key][rowKey]}</td>
-        ))}
-      </tr>
-    ));
-
     table = (
-      <table>
-        <thead>
-          <tr>
-            <th />
-            {tableHeaders}
-          </tr>
-        </thead>
-        <tbody>{tableBody}</tbody>
-      </table>
+      <BalancesTable
+        balances={user.balances}
+        programs={realPrograms.entities}
+      />
     );
   }
 

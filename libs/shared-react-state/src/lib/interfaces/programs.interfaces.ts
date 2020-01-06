@@ -1,6 +1,10 @@
 import { Program } from '@points/shared-models';
 
 export interface State {
-  ids: Array<string>;
-  entities: { [id: string]: Program };
+  ids: string[];
+  entities: Entities;
+}
+
+export interface Entities {
+  [id: string]: Program;
 }
