@@ -17,20 +17,17 @@ interface Props {
 export default (props: Props) => {
   const { balances, programs } = props;
 
-  const rowsByID = Object.keys(balances).reduce(
-    getRowsByID(balances, programs),
-    {}
-  );
+  const balanceIDs = Object.keys(balances);
+  const rowsByID = balanceIDs.reduce(getRowsByID(balances, programs), {});
   const rowData = Object.values(rowsByID);
 
+  const fullSize = {
+    height: '100%',
+    width: '100%'
+  };
+
   return (
-    <div
-      className="ag-theme-material"
-      style={{
-        height: '100%',
-        width: '100%'
-      }}
-    >
+    <div className="ag-theme-material full-size" style={fullSize}>
       <AgGridReact
         columnDefs={columnDefs}
         rowData={rowData}
