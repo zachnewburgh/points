@@ -8,24 +8,21 @@ import { BalancesTable } from '../../components/BalancesTable';
 import './Home.scss';
 
 interface Props extends RouteComponentProps {
-  programs: { ids: string[]; entities: ProgramEntities };
+  programs: ProgramsState;
   user: User;
 }
-
-interface Airport {
-  name: string;
-  code: string;
-}
-
 export default (props: Props) => {
   const { programs = {} as ProgramsState, user } = props;
   const { balances } = user;
   const { ids, entities } = programs;
 
-  let table: JSX.Element;
-  if (ids.length) {
-    table = <BalancesTable balances={balances} programs={entities} />;
-  }
-
-  return <section className="home">{table}</section>;
+  return (
+    <section className="home">
+      <BalancesTable
+        balances={balances}
+        programIDs={ids}
+        programEntities={entities}
+      />
+    </section>
+  );
 };

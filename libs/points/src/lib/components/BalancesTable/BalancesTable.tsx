@@ -10,15 +10,19 @@ import {
 } from './BalancesTable.constants';
 
 interface Props {
-  programs: ProgramEntities;
+  programIDs: string[];
+  programEntities: ProgramEntities;
   balances: UserBalances;
 }
 
 export default (props: Props) => {
-  const { balances, programs } = props;
+  const { balances, programIDs, programEntities } = props;
 
-  const balanceIDs = Object.keys(balances);
-  const rowsByID = balanceIDs.reduce(getRowsByID(balances, programs), {});
+  let rowsByID = {};
+  if (programIDs.length) {
+    const balanceIDs = Object.keys(balances);
+    rowsByID = balanceIDs.reduce(getRowsByID(balances, programEntities), {});
+  }
   const rowData = Object.values(rowsByID);
 
   const fullSize = {
