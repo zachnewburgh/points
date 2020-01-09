@@ -64,7 +64,7 @@ export const getRowsByID = (
   const row = rowsByIDWithPartners[ID] || ({} as ProgramRow);
   const { transfer = 0 } = row;
   const total = current + transfer;
-  const newRow = { name, current, transfer, total };
+  const newRow = { ...row, name, current, transfer, total };
   return { ...rowsByIDWithPartners, [ID]: newRow };
 };
 
@@ -124,7 +124,4 @@ export const defaultColDef = {
   filter: GridColFilter.Number
 };
 
-export const onGridReady = (params: GridReadyEvent) => {
-  const { api } = params;
-  api.sizeColumnsToFit();
-};
+export const onGridReady = ({ api }: GridReadyEvent) => api.sizeColumnsToFit();
