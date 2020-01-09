@@ -1,5 +1,9 @@
 export interface Program {
   id: string;
   name: string;
-  transferRatiosByPartner: { [id: string]: number };
+  transferRatiosByPartner: ProgramPartnerRatios;
+}
+
+export interface ProgramPartnerRatios {
+  [id: string]: number;
 }

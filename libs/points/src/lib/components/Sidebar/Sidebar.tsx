@@ -1,19 +1,19 @@
-import React from 'react';
 import {
-  Drawer,
-  IconButton,
   Divider,
+  Drawer,
+  Icon,
+  IconButton,
   List,
   ListItem,
   ListItemIcon,
-  Icon,
   ListItemText,
   Theme
 } from '@material-ui/core';
 import {
-  ChevronRight as ChevronRightIcon,
-  ChevronLeft as ChevronLeftIcon
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon
 } from '@material-ui/icons';
+import React from 'react';
 import { tabs } from './Sidebar.constants';
 
 interface Props {
@@ -51,21 +51,27 @@ export default (props: Props) => {
         </IconButton>
       </div>
       <Divider />
-      <List>
-        {tabs.slice(0, -2).map((tab, index) => (
-          <ListItem
-            button
-            key={index}
-            onClick={() => emitClickedLink(tab.link)}
-          >
-            <ListItemIcon>
-              <Icon>{tab.icon}</Icon>
-            </ListItemIcon>
-            <ListItemText primary={tab.name} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
+      {tabs.length > 2 ? (
+        <>
+          <List>
+            {tabs.slice(0, -2).map((tab, index) => (
+              <ListItem
+                button
+                key={index}
+                onClick={() => emitClickedLink(tab.link)}
+              >
+                <ListItemIcon>
+                  <Icon>{tab.icon}</Icon>
+                </ListItemIcon>
+                <ListItemText primary={tab.name} />
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+        </>
+      ) : (
+        ''
+      )}
       <List>
         {tabs.slice(-2).map((tab, index) => (
           <ListItem

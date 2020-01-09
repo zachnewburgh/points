@@ -1,24 +1,14 @@
 import { connect } from 'react-redux';
-import { Home } from '../pages';
-import { AppState } from '@points/points';
 import { Dispatch } from 'redux';
-import { searchActions } from '@points/shared-react-state';
+import { Home } from '../pages';
+import { AppState } from '../state.interfaces';
 
 const mapStateToProps = (state: AppState) => ({
-  arriving: state.search.arriving,
-  departing: state.search.departing,
-  program: state.search.program,
   programs: state.programs,
   user: state.user
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setArriving: (airportName: string) =>
-    dispatch(searchActions.setArriving(airportName)),
-  setDeparting: (airportName: string) =>
-    dispatch(searchActions.setDeparting(airportName)),
-  setProgram: (program: string) => dispatch(searchActions.setProgram(program))
-});
+const mapDispatchToProps = (_: Dispatch) => ({});
 
 export default connect(
   mapStateToProps,
