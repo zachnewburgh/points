@@ -33,10 +33,7 @@ export default (props: Props) => {
   };
 
   useEffect(() => {
-    if (isReady) {
-      handleLogin();
-      getPrograms();
-    }
+    if (isReady) getPrograms();
   }, [isReady]);
 
   useEffect(() => {
