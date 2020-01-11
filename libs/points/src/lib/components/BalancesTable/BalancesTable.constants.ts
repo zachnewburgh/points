@@ -1,6 +1,6 @@
 import { ProgramPartnerRatios, UserBalances } from '@points/shared-models';
 import { ProgramEntities } from '@points/shared-react-state';
-import { GridReadyEvent } from 'ag-grid-community';
+import { CellValueChangedEvent, GridReadyEvent } from 'ag-grid-community';
 import { BaseWithValueColDefParams } from 'ag-grid-community/dist/lib/entities/colDef';
 
 interface ProgramRow {
@@ -27,7 +27,7 @@ const addPartnersToRows = (
   const total = current + transfer;
   const { name } = programsByID[ID];
   partners.push(`${baseName} (${numberWithCommas(basePoints)})`);
-  const newRow = { ...row, name, current, transfer, total, partners };
+  const newRow = { ...row, ID, name, current, transfer, total, partners };
   return { ...rowsByID, [ID]: newRow };
 };
 
@@ -102,7 +102,8 @@ export const columnDefs = [
   },
   {
     headerName: 'Current',
-    field: 'current'
+    field: 'current',
+    editable: true
   },
   {
     headerName: 'Transfer',
@@ -121,7 +122,16 @@ export const defaultColDef = {
   },
   valueFormatter: formatNumber,
   type: GridColType.Number,
-  filter: GridColFilter.Number
+  filter: GridColFilter.Number,
+  editable: true
 };
 
 export const onGridReady = ({ api }: GridReadyEvent) => api.sizeColumnsToFit();
+export const getUpdatedBalances = (
+  balances: UserBalances,
+  event: CellValueChangedEvent
+) => {
+  const { data } = event;
+  const { current, ID: programID } = data;
+  return { ...balances, [programID]: +current || 0 };
+};
