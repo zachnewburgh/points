@@ -1,6 +1,10 @@
 import { ProgramPartnerRatios, UserBalances } from '@points/shared-models';
 import { ProgramEntities } from '@points/shared-react-state';
-import { CellValueChangedEvent, GridReadyEvent } from 'ag-grid-community';
+import {
+  CellValueChangedEvent,
+  GridReadyEvent,
+  ITooltipParams
+} from 'ag-grid-community';
 import { BaseWithValueColDefParams } from 'ag-grid-community/dist/lib/entities/colDef';
 
 interface ProgramRow {
@@ -91,6 +95,9 @@ enum GridColFilter {
   Number = 'agNumberColumnFilter'
 }
 
+const totalTooltip = ({ data }: ITooltipParams) =>
+  data.partners && `Transfers: ${data.partners.join(', ')}`;
+
 export const columnDefs = [
   {
     headerName: 'Name',
@@ -111,7 +118,8 @@ export const columnDefs = [
   },
   {
     headerName: 'Total',
-    field: 'total'
+    field: 'total',
+    tooltipValueGetter: totalTooltip
   }
 ];
 
