@@ -141,5 +141,7 @@ export const getUpdatedBalances = (
 ) => {
   const { data } = event;
   const { current, ID: programID } = data;
-  return { ...balances, [programID]: +current || 0 };
+  const newBalances = { ...balances, [programID]: +current || 0 };
+  if (!newBalances[programID]) delete newBalances[programID];
+  return newBalances;
 };

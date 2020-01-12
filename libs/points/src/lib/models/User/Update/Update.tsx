@@ -1,7 +1,7 @@
+import { Program, User } from '@points/shared-models';
+import { PrimaryButton, Select, TextInput } from '@points/shared-react-ui';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import './Update.scss';
-import { Program, User } from '@points/shared-models';
-import { PrimaryButton, TextInput, Select } from '@points/shared-react-ui';
 
 interface Props {
   programs: Program[];
@@ -37,8 +37,8 @@ export default (props: Props) => {
   const selectProgram = (
     <Select
       id="edit-program-from"
-      label="From"
-      helperText="From"
+      label="Program"
+      helperText=""
       handleOnChange={handleProgramChange}
       value={programID}
       options={programOptions}
@@ -48,8 +48,8 @@ export default (props: Props) => {
   const selectBalance = (
     <TextInput
       id="program-balance"
-      label="Program Balance"
-      helperText="Program Balance"
+      label="Balance"
+      helperText=""
       value={balance}
       handleOnChange={handleBalanceChange}
     />
@@ -57,7 +57,7 @@ export default (props: Props) => {
 
   return (
     <form onSubmit={handleupdateUser}>
-      <h3>Add a Point Balance</h3>
+      <h3>Add a New Balance</h3>
       {selectProgram}
       {selectBalance}
       <PrimaryButton type="submit" />

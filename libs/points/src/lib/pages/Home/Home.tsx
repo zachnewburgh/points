@@ -7,6 +7,7 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { BalancesTable } from '../../components/BalancesTable';
 import { getUpdatedBalances } from '../../components/BalancesTable/BalancesTable.constants';
+import { UserUpdate } from '../../models';
 import './Home.scss';
 
 interface Props extends RouteComponentProps {
@@ -24,14 +25,27 @@ export default (props: Props) => {
     const update = { balances: updatedBalances };
     onBalanceUpdate(id, update);
   };
+
   return (
     <section className="home">
-      <BalancesTable
-        balances={balances}
-        programIDs={ids}
-        programEntities={entities}
-        onBalanceUpdate={handleBalanceUpdate}
-      />
+      <div className="add-balance">
+        <UserUpdate
+          programs={Object.values(entities)}
+          user={user}
+          updateUser={onBalanceUpdate}
+        />
+      </div>
+      <div
+        className="display-balances"
+        style={{ width: '100%', height: '100%' }}
+      >
+        <BalancesTable
+          balances={balances}
+          programIDs={ids}
+          programEntities={entities}
+          onBalanceUpdate={handleBalanceUpdate}
+        />
+      </div>
     </section>
   );
 };
