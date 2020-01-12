@@ -68,7 +68,7 @@ export const getRowsByID = (
   const row = rowsByIDWithPartners[ID] || ({} as ProgramRow);
   const { transfer = 0 } = row;
   const total = current + transfer;
-  const newRow = { ...row, name, current, transfer, total };
+  const newRow = { ...row, ID, name, current, transfer, total };
   return { ...rowsByIDWithPartners, [ID]: newRow };
 };
 
