@@ -1,5 +1,6 @@
 import { UserBalances } from '@points/shared-models';
 import { ProgramEntities } from '@points/shared-react-state';
+import { CellValueChangedEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 import {
@@ -13,10 +14,11 @@ interface Props {
   programIDs: string[];
   programEntities: ProgramEntities;
   balances: UserBalances;
+  onBalanceUpdate: (event: CellValueChangedEvent) => void;
 }
 
 export default (props: Props) => {
-  const { balances, programIDs, programEntities } = props;
+  const { balances, programIDs, programEntities, onBalanceUpdate } = props;
 
   let rowsByID = {};
   if (programIDs.length) {
@@ -30,6 +32,8 @@ export default (props: Props) => {
     width: '100%'
   };
 
+  const handleBalanceUpdate = onBalanceUpdate;
+
   return (
     <div className="ag-theme-material full-size" style={fullSize}>
       <AgGridReact
@@ -41,6 +45,7 @@ export default (props: Props) => {
         suppressMovableColumns
         alwaysShowVerticalScroll
         multiSortKey="ctrl"
+        onCellValueChanged={handleBalanceUpdate}
       />
     </div>
   );

@@ -1,3 +1,5 @@
+import { User } from '@points/shared-models';
+import { userActions } from '@points/shared-react-state';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { Home } from '../pages';
@@ -8,7 +10,10 @@ const mapStateToProps = (state: AppState) => ({
   user: state.user
 });
 
-const mapDispatchToProps = (_: Dispatch) => ({});
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  onBalanceUpdate: (ID: string, update: Partial<User>) =>
+    dispatch(userActions.updateUser(ID, update))
+});
 
 export default connect(
   mapStateToProps,

@@ -1,7 +1,7 @@
+import { Program } from '@points/shared-models';
+import { PrimaryButton, Select, TextInput } from '@points/shared-react-ui';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import './Update.scss';
-import { Program } from '@points/shared-models';
-import { TextInput, PrimaryButton, Select } from '@points/shared-react-ui';
 
 interface Props {
   programs: Program[];
@@ -39,11 +39,12 @@ export default (props: Props) => {
   const handleAddTransfer = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const ratio = toRatio / fromRatio;
+    const fromProgram = programs.find(({ id }) => id === from);
     const transferRatiosByPartner = {
-      ...programs.find(({ id }) => id === ID).transferRatiosByPartner,
+      ...fromProgram.transferRatiosByPartner,
       [to]: ratio
     };
-    updateProgram(ID, { transferRatiosByPartner });
+    updateProgram(from, { transferRatiosByPartner });
   };
 
   const handleName = (event: ChangeEvent<HTMLInputElement>) => {

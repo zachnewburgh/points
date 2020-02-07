@@ -1,6 +1,10 @@
 import { ProgramPartnerRatios, UserBalances } from '@points/shared-models';
 import { ProgramEntities } from '@points/shared-react-state';
-import { GridReadyEvent } from 'ag-grid-community';
+import {
+  CellValueChangedEvent,
+  GridReadyEvent,
+  ITooltipParams
+} from 'ag-grid-community';
 import { BaseWithValueColDefParams } from 'ag-grid-community/dist/lib/entities/colDef';
 
 interface ProgramRow {
@@ -27,7 +31,7 @@ const addPartnersToRows = (
   const total = current + transfer;
   const { name } = programsByID[ID];
   partners.push(`${baseName} (${numberWithCommas(basePoints)})`);
-  const newRow = { ...row, name, current, transfer, total, partners };
+  const newRow = { ...row, ID, name, current, transfer, total, partners };
   return { ...rowsByID, [ID]: newRow };
 };
 
@@ -64,7 +68,7 @@ export const getRowsByID = (
   const row = rowsByIDWithPartners[ID] || ({} as ProgramRow);
   const { transfer = 0 } = row;
   const total = current + transfer;
-  const newRow = { ...row, name, current, transfer, total };
+  const newRow = { ...row, ID, name, current, transfer, total };
   return { ...rowsByIDWithPartners, [ID]: newRow };
 };
 
@@ -91,6 +95,9 @@ enum GridColFilter {
   Number = 'agNumberColumnFilter'
 }
 
+const totalTooltip = ({ data }: ITooltipParams) =>
+  data.partners && `Transfers: ${data.partners.join(', ')}`;
+
 export const columnDefs = [
   {
     headerName: 'Name',
@@ -102,7 +109,8 @@ export const columnDefs = [
   },
   {
     headerName: 'Current',
-    field: 'current'
+    field: 'current',
+    editable: true
   },
   {
     headerName: 'Transfer',
@@ -110,7 +118,8 @@ export const columnDefs = [
   },
   {
     headerName: 'Total',
-    field: 'total'
+    field: 'total',
+    tooltipValueGetter: totalTooltip
   }
 ];
 
@@ -121,7 +130,18 @@ export const defaultColDef = {
   },
   valueFormatter: formatNumber,
   type: GridColType.Number,
-  filter: GridColFilter.Number
+  filter: GridColFilter.Number,
+  editable: true
 };
 
 export const onGridReady = ({ api }: GridReadyEvent) => api.sizeColumnsToFit();
+export const getUpdatedBalances = (
+  balances: UserBalances,
+  event: CellValueChangedEvent
+) => {
+  const { data } = event;
+  const { current, ID: programID } = data;
+  const newBalances = { ...balances, [programID]: +current || 0 };
+  if (!newBalances[programID]) delete newBalances[programID];
+  return newBalances;
+};
